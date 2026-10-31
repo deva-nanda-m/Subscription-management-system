@@ -1,0 +1,327 @@
+{
+  "info": {
+    "_postman_id": "b8d27e2a-14c4-4b57-a9a3-brightloop001",
+    "name": "Brightloop Software - Module 1: Auth & Role Management",
+    "description": "API collection for Brightloop Subscription Management System - Module 1: Authentication and User Role Management.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000/api",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Customer",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Alice Customer\",\n  \"email\": \"alice.customer@example.com\",\n  \"password\": \"CustomerSecure2026!\",\n  \"confirm_password\": \"CustomerSecure2026!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/register/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "register", ""]
+            },
+            "description": "Registers a new customer. Automatically assigns the CUSTOMER role. Strict password complexity is validated."
+          }
+        },
+        {
+          "name": "Login (Admin / Staff / Customer)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.tokens && jsonData.tokens.access) {",
+                  "    pm.collectionVariables.set(\"access_token\", jsonData.tokens.access);",
+                  "    pm.collectionVariables.set(\"refresh_token\", jsonData.tokens.refresh);",
+                  "    console.log(\"Saved JWT access token to collection variable.\");",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@brightloop.com\",\n  \"password\": \"Admin@Brightloop2026!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "login", ""]
+            },
+            "description": "Authenticates user using email and password. Returns access and refresh JWT tokens."
+          }
+        },
+        {
+          "name": "Refresh Access Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var jsonData = pm.response.json();",
+                  "if (jsonData.access) {",
+                  "    pm.collectionVariables.set(\"access_token\", jsonData.access);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/token/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "token", "refresh", ""]
+            },
+            "description": "Obtains a new access token using a valid refresh token."
+          }
+        },
+        {
+          "name": "Get Current Profile (Me)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "me", ""]
+            },
+            "description": "Returns current authenticated user details."
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/logout/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "logout", ""]
+            },
+            "description": "Blacklists the refresh token and terminates the user session."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Password Recovery",
+      "item": [
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice.customer@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/forgot-password/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "forgot-password", ""]
+            },
+            "description": "Sends password reset email link containing a cryptographically secure, time-limited token. Always responds with generic success to prevent email enumeration."
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice.customer@example.com\",\n  \"token\": \"<PASTE_TOKEN_FROM_EMAIL>\",\n  \"password\": \"UpdatedPassword2026!\",\n  \"confirm_password\": \"UpdatedPassword2026!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/reset-password/",
+              "host": ["{{base_url}}"],
+              "path": ["auth", "reset-password", ""]
+            },
+            "description": "Validates single-use token and updates user password."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Staff Management",
+      "item": [
+        {
+          "name": "List Staff Accounts",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/staff/?search=&status=",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "staff", ""],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Search by name or email"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "Filter by 'active' or 'inactive'"
+                }
+              ]
+            },
+            "description": "Returns list of all staff accounts. Only accessible by ADMIN role."
+          }
+        },
+        {
+          "name": "Create Staff Account",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Carlos Staff\",\n  \"email\": \"carlos.staff@brightloop.com\",\n  \"password\": \"StaffSecret2026!\",\n  \"confirm_password\": \"StaffSecret2026!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/staff/",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "staff", ""]
+            },
+            "description": "Provisions a new staff account. Only accessible by ADMIN role."
+          }
+        },
+        {
+          "name": "Get Staff Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/admin/staff/2/",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "staff", "2", ""]
+            },
+            "description": "Returns details of a specific staff account. Only accessible by ADMIN role."
+          }
+        },
+        {
+          "name": "Toggle Staff Status (Activate/Deactivate)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/admin/staff/2/status/",
+              "host": ["{{base_url}}"],
+              "path": ["admin", "staff", "2", "status", ""]
+            },
+            "description": "Activates or deactivates a staff member account. Only accessible by ADMIN role."
+          }
+        }
+      ]
+    }
+  ]
+}
+
