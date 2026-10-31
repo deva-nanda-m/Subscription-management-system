@@ -38,11 +38,10 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
         { label: 'Overview', path: '/admin/dashboard', icon: LayoutDashboard },
         { label: 'Staff Management', path: '/admin/staff', icon: Users },
         {
-          label: 'Product Catalog',
-          path: '#',
+          label: 'Products & Variants',
+          path: '/admin/products',
           icon: Package,
           badge: 'Module 2',
-          disabled: true,
         },
         {
           label: 'Subscription Plans',
@@ -64,6 +63,12 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
     if (role === 'STAFF') {
       return [
         { label: 'Staff Operations', path: '/staff/dashboard', icon: LayoutDashboard },
+        {
+          label: 'Product Catalog',
+          path: '/staff/products',
+          icon: Package,
+          badge: 'Module 2',
+        },
         {
           label: 'Active Subscriptions',
           path: '#',
@@ -91,6 +96,12 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
     // CUSTOMER role
     return [
       { label: 'Customer Portal', path: '/customer/dashboard', icon: LayoutDashboard },
+      {
+        label: 'Software Catalog',
+        path: '/customer/products',
+        icon: Package,
+        badge: 'Module 2',
+      },
       {
         label: 'My Subscriptions',
         path: '#',

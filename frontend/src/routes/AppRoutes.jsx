@@ -12,8 +12,14 @@ import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 // Role Dashboards
 import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
 import StaffManagementPage from '../pages/admin/StaffManagementPage';
+import ProductListPage from '../pages/admin/ProductListPage';
+import ProductDetailPage from '../pages/admin/ProductDetailPage';
+
 import StaffDashboardPage from '../pages/staff/StaffDashboardPage';
+import StaffProductCatalogPage from '../pages/staff/StaffProductCatalogPage';
+
 import CustomerDashboardPage from '../pages/customer/CustomerDashboardPage';
+import CustomerProductCatalogPage from '../pages/customer/CustomerProductCatalogPage';
 
 // Root index redirector
 const RootRedirect = () => {
@@ -69,6 +75,22 @@ export const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/admin/products"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <ProductListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/products/:id"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <ProductDetailPage />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Staff Routes */}
       <Route
@@ -79,6 +101,14 @@ export const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/staff/products"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <StaffProductCatalogPage />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Customer Routes */}
       <Route
@@ -86,6 +116,14 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={['CUSTOMER']}>
             <CustomerDashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customer/products"
+        element={
+          <ProtectedRoute allowedRoles={['CUSTOMER']}>
+            <CustomerProductCatalogPage />
           </ProtectedRoute>
         }
       />

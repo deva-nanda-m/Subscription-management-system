@@ -1,8 +1,8 @@
 {
   "info": {
     "_postman_id": "b8d27e2a-14c4-4b57-a9a3-brightloop001",
-    "name": "Brightloop Software - Module 1: Auth & Role Management",
-    "description": "API collection for Brightloop Subscription Management System - Module 1: Authentication and User Role Management.",
+    "name": "Brightloop Software - Subscription Management System API",
+    "description": "API collection for Brightloop Subscription Management System:\n- Module 1: Authentication & Role Management\n- Module 2: Product & Product Variant Management",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -24,7 +24,7 @@
   ],
   "item": [
     {
-      "name": "Authentication",
+      "name": "Module 1 - Authentication",
       "item": [
         {
           "name": "Register Customer",
@@ -45,7 +45,7 @@
               "host": ["{{base_url}}"],
               "path": ["auth", "register", ""]
             },
-            "description": "Registers a new customer. Automatically assigns the CUSTOMER role. Strict password complexity is validated."
+            "description": "Registers a new customer. Automatically assigns the CUSTOMER role."
           }
         },
         {
@@ -118,8 +118,7 @@
               "raw": "{{base_url}}/auth/token/refresh/",
               "host": ["{{base_url}}"],
               "path": ["auth", "token", "refresh", ""]
-            },
-            "description": "Obtains a new access token using a valid refresh token."
+            }
           }
         },
         {
@@ -136,8 +135,7 @@
               "raw": "{{base_url}}/auth/me/",
               "host": ["{{base_url}}"],
               "path": ["auth", "me", ""]
-            },
-            "description": "Returns current authenticated user details."
+            }
           }
         },
         {
@@ -162,14 +160,13 @@
               "raw": "{{base_url}}/auth/logout/",
               "host": ["{{base_url}}"],
               "path": ["auth", "logout", ""]
-            },
-            "description": "Blacklists the refresh token and terminates the user session."
+            }
           }
         }
       ]
     },
     {
-      "name": "Password Recovery",
+      "name": "Module 1 - Password Recovery",
       "item": [
         {
           "name": "Forgot Password",
@@ -189,8 +186,7 @@
               "raw": "{{base_url}}/auth/forgot-password/",
               "host": ["{{base_url}}"],
               "path": ["auth", "forgot-password", ""]
-            },
-            "description": "Sends password reset email link containing a cryptographically secure, time-limited token. Always responds with generic success to prevent email enumeration."
+            }
           }
         },
         {
@@ -205,20 +201,19 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"alice.customer@example.com\",\n  \"token\": \"<PASTE_TOKEN_FROM_EMAIL>\",\n  \"password\": \"UpdatedPassword2026!\",\n  \"confirm_password\": \"UpdatedPassword2026!\"\n}"
+              "raw": "{\n  \"email\": \"alice.customer@example.com\",\n  \"token\": \"<PASTE_TOKEN>\",\n  \"password\": \"UpdatedPassword2026!\",\n  \"confirm_password\": \"UpdatedPassword2026!\"\n}"
             },
             "url": {
               "raw": "{{base_url}}/auth/reset-password/",
               "host": ["{{base_url}}"],
               "path": ["auth", "reset-password", ""]
-            },
-            "description": "Validates single-use token and updates user password."
+            }
           }
         }
       ]
     },
     {
-      "name": "Admin - Staff Management",
+      "name": "Module 1 - Admin Staff Management",
       "item": [
         {
           "name": "List Staff Accounts",
@@ -235,19 +230,10 @@
               "host": ["{{base_url}}"],
               "path": ["admin", "staff", ""],
               "query": [
-                {
-                  "key": "search",
-                  "value": "",
-                  "description": "Search by name or email"
-                },
-                {
-                  "key": "status",
-                  "value": "",
-                  "description": "Filter by 'active' or 'inactive'"
-                }
+                { "key": "search", "value": "" },
+                { "key": "status", "value": "" }
               ]
-            },
-            "description": "Returns list of all staff accounts. Only accessible by ADMIN role."
+            }
           }
         },
         {
@@ -272,30 +258,11 @@
               "raw": "{{base_url}}/admin/staff/",
               "host": ["{{base_url}}"],
               "path": ["admin", "staff", ""]
-            },
-            "description": "Provisions a new staff account. Only accessible by ADMIN role."
+            }
           }
         },
         {
-          "name": "Get Staff Detail",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "Authorization",
-                "value": "Bearer {{access_token}}"
-              }
-            ],
-            "url": {
-              "raw": "{{base_url}}/admin/staff/2/",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "staff", "2", ""]
-            },
-            "description": "Returns details of a specific staff account. Only accessible by ADMIN role."
-          }
-        },
-        {
-          "name": "Toggle Staff Status (Activate/Deactivate)",
+          "name": "Toggle Staff Status",
           "request": {
             "method": "PATCH",
             "header": [
@@ -316,12 +283,280 @@
               "raw": "{{base_url}}/admin/staff/2/status/",
               "host": ["{{base_url}}"],
               "path": ["admin", "staff", "2", "status", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 2 - Products",
+      "item": [
+        {
+          "name": "List Products",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/?search=&category=&status=",
+              "host": ["{{base_url}}"],
+              "path": ["products", ""],
+              "query": [
+                { "key": "search", "value": "" },
+                { "key": "category", "value": "" },
+                { "key": "status", "value": "" }
+              ]
             },
-            "description": "Activates or deactivates a staff member account. Only accessible by ADMIN role."
+            "description": "Lists all products. Filtered to active only for customers."
+          }
+        },
+        {
+          "name": "Create Product (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Brightloop API Gateway\",\n  \"code\": \"brightloop-api-gateway\",\n  \"description\": \"High-concurrency webhook and API routing engine.\",\n  \"category\": \"API\",\n  \"status\": \"ACTIVE\",\n  \"is_recurring\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/",
+              "host": ["{{base_url}}"],
+              "path": ["products", ""]
+            },
+            "description": "Admin only. Creates a new core product."
+          }
+        },
+        {
+          "name": "Get Product Details (with Variants)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/1/",
+              "host": ["{{base_url}}"],
+              "path": ["products", "1", ""]
+            },
+            "description": "Returns product details and its list of variants."
+          }
+        },
+        {
+          "name": "Update Product (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated description of platform capabilities.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/1/",
+              "host": ["{{base_url}}"],
+              "path": ["products", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Product Status (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"ACTIVE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/1/status/",
+              "host": ["{{base_url}}"],
+              "path": ["products", "1", "status", ""]
+            }
+          }
+        },
+        {
+          "name": "Delete Product (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/1/",
+              "host": ["{{base_url}}"],
+              "path": ["products", "1", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Module 2 - Variants",
+      "item": [
+        {
+          "name": "List Product Variants",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/products/1/variants/",
+              "host": ["{{base_url}}"],
+              "path": ["products", "1", "variants", ""]
+            }
+          }
+        },
+        {
+          "name": "Create Product Variant (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ultra Scale Tier\",\n  \"sku\": \"BL-ANL-ULTRA\",\n  \"price\": \"899.00\",\n  \"currency\": \"USD\",\n  \"billing_type\": \"RECURRING\",\n  \"is_active\": true,\n  \"attributes\": {\n    \"seats\": 500,\n    \"storage_gb\": 10000,\n    \"custom_ai\": true\n  }\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/products/1/variants/",
+              "host": ["{{base_url}}"],
+              "path": ["products", "1", "variants", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Variant Detail",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/variants/1/",
+              "host": ["{{base_url}}"],
+              "path": ["variants", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Variant (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"price\": \"949.00\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/variants/1/",
+              "host": ["{{base_url}}"],
+              "path": ["variants", "1", ""]
+            }
+          }
+        },
+        {
+          "name": "Toggle Variant Status (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/variants/1/status/",
+              "host": ["{{base_url}}"],
+              "path": ["variants", "1", "status", ""]
+            }
+          }
+        },
+        {
+          "name": "Delete Variant (Admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/variants/1/",
+              "host": ["{{base_url}}"],
+              "path": ["variants", "1", ""]
+            }
           }
         }
       ]
     }
   ]
 }
-

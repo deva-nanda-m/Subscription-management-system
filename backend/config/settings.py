@@ -32,6 +32,7 @@ INSTALLED_APPS = [
 
     # Brightloop applications
     'accounts',
+    'products',
 ]
 
 MIDDLEWARE = [

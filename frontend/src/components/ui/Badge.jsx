@@ -69,5 +69,65 @@ export const StatusBadge = ({ isActive }) => {
   );
 };
 
+export const ProductStatusBadge = ({ status }) => {
+  const normalized = (status || '').toUpperCase();
+  if (normalized === 'ACTIVE') {
+    return <Badge variant="active">Active</Badge>;
+  }
+  if (normalized === 'DRAFT') {
+    return <Badge variant="warning">Draft</Badge>;
+  }
+  if (normalized === 'ARCHIVED') {
+    return <Badge variant="danger">Archived</Badge>;
+  }
+  return <Badge variant="inactive">Inactive</Badge>;
+};
+
+export const ProductCategoryBadge = ({ category }) => {
+  const normalized = (category || '').toUpperCase();
+  const styles = {
+    SOFTWARE: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    SERVICE: 'bg-amber-50 text-amber-700 border-amber-200',
+    STORAGE: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+    ADDON: 'bg-purple-50 text-purple-700 border-purple-200',
+    API: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+  };
+  const labels = {
+    SOFTWARE: 'SaaS Platform',
+    SERVICE: 'Service',
+    STORAGE: 'Storage',
+    ADDON: 'Add-on',
+    API: 'API',
+  };
+  return (
+    <span className={`inline-flex items-center px-2 py-0.5 rounded-md text-[11px] font-medium border ${styles[normalized] || 'bg-slate-100 text-slate-700 border-slate-200'}`}>
+      {labels[normalized] || category}
+    </span>
+  );
+};
+
+export const BillingTypeBadge = ({ type }) => {
+  const normalized = (type || '').toUpperCase();
+  if (normalized === 'RECURRING') {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        Recurring
+      </span>
+    );
+  }
+  if (normalized === 'ONE_TIME') {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+        One-Time
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+      Metered
+    </span>
+  );
+};
+
 export default Badge;
 
