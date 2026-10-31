@@ -34,6 +34,8 @@ INSTALLED_APPS = [
     'accounts',
     'products',
     'plans',
+    'quotations',
+    'subscriptions',
 ]
 
 MIDDLEWARE = [
@@ -186,6 +188,18 @@ CELERY_TIMEZONE = TIME_ZONE
 CELERY_BEAT_SCHEDULE = {
     'close_expired_plans_every_hour': {
         'task': 'plans.tasks.close_expired_plans_task',
+        'schedule': 3600.0,  # Run every hour
+    },
+    'expire_overdue_quotations_hourly': {
+        'task': 'quotations.tasks.expire_overdue_quotations_task',
+        'schedule': 3600.0,  # Run every hour
+    },
+    'activate_scheduled_subscriptions_hourly': {
+        'task': 'subscriptions.tasks.activate_scheduled_subscriptions_task',
+        'schedule': 3600.0,  # Run every hour
+    },
+    'close_expired_subscriptions_hourly': {
+        'task': 'subscriptions.tasks.close_expired_subscriptions_task',
         'schedule': 3600.0,  # Run every hour
     },
 }

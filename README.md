@@ -52,6 +52,28 @@ A production-grade, enterprise-scale subscription management platform designed t
 - **Celery Periodic Automation:** Hourly background daemon (`close_expired_plans_task`) checks for expired plans with `auto_close=True` and closes them automatically.
 - **RBAC:** Admins have complete CRUD & lifecycle controls; Staff has read-only access for operational customer assistance; Customers cannot access administrative management endpoints.
 
+### Part 1: Quotation Management & Subscription Lifecycle
+- **Quotation Templates:** Reusable blueprints (`QuotationTemplate`, `QuotationTemplateLine`) with validity period, product, variant, and plan line items. Editing a template never alters historical quotations.
+- **Customer Quotations:** Generated for specific customers with unique quotation numbers (`QTN-YYYYMM-XXXX`). Captures immutable price snapshots (`unit_price`, `discount_percentage`, `tax_rate`, `total_amount`), validity period, and auto-computed expiry dates.
+- **Quotation Lifecycle:**
+  - `DRAFT` $\to$ `QUOTATION` (Finalized/Issued)
+  - `QUOTATION` $\to$ `CONFIRMED` (Customer Acceptance / Staff Approval)
+  - `DRAFT` / `QUOTATION` $\to$ `CANCELLED`
+  - Automated expiry via Celery Beat if overdue without confirmation (`EXPIRED`).
+- **ReportLab PDF Generation:** Generates vector-quality, branded PDF proposals (`backend/quotations/pdf_generator.py`) with company metadata, pricing summaries, and customer sign-off blocks. Supports direct browser viewing and attachment downloads.
+- **Email Notification Engine:** Integrates SMTP/console email dispatch (`QuotationSendEmailView`) attaching the generated PDF and logging dispatch status into `QuotationEmailLog`.
+- **Atomic Subscription Conversion:** Confirmed quotations can be converted atomically (`transaction.atomic`) into active `Subscription` contracts. Copies snapshot line items into `SubscriptionItem`, computes the initial `next_billing_date` based on plan billing intervals, and enforces duplicate-conversion protection (`is_converted=True`).
+- **Subscription Lifecycle Engine:**
+  - `CONFIRMED` $\to$ `ACTIVE`
+  - `ACTIVE` $\leftrightarrow$ `PAUSED` (Requires mandatory pause reason, logs pause & resume timestamps in `SubscriptionPauseHistory`)
+  - `ACTIVE` $\to$ `CLOSED` (Terminal state)
+  - `RENEWAL`: Creates a new subscription linked through `SubscriptionRenewal` to the original contract.
+- **Celery Periodic Automations:**
+  - `expire_overdue_quotations_task`: Hourly task that flags unconfirmed overdue quotations as `EXPIRED`.
+  - `activate_scheduled_subscriptions_task`: Activates confirmed subscriptions whose start date has arrived.
+  - `close_expired_subscriptions_task`: Closes subscriptions whose fixed end date has elapsed.
+- **Audit Logging:** Comprehensive status history tracking for both quotations (`QuotationStatusHistory`) and subscriptions (`SubscriptionStatusHistory`).
+
 ---
 
 ## API Endpoints Overview
@@ -101,6 +123,39 @@ A production-grade, enterprise-scale subscription management platform designed t
 | `POST` | `/api/plans/<id>/activate/` | Activate inactive/draft plan | Admin only |
 | `GET` | `/api/plans/<id>/history/` | Audit log of status transitions and reasons | Admin & Staff |
 
+### Quotations & Templates (`/api/quotations/`, `/api/quotation-templates/`)
+| Method | Endpoint | Description | Clearance |
+|---|---|---|---|
+| `GET` | `/api/quotation-templates/` | List reusable quotation templates | Admin & Staff |
+| `POST` | `/api/quotation-templates/` | Create template with preconfigured lines | Admin & Staff |
+| `GET` | `/api/quotation-templates/<id>/` | Retrieve quotation template details | Admin & Staff |
+| `PATCH` | `/api/quotation-templates/<id>/` | Update quotation template | Admin & Staff |
+| `DELETE` | `/api/quotation-templates/<id>/` | Delete quotation template | Admin & Staff |
+| `GET` | `/api/customers/lookup/` | List active customers for quote selection | Admin & Staff |
+| `GET` | `/api/quotations/` | List quotations (Customer role filtered to own) | Authenticated |
+| `POST` | `/api/quotations/` | Create customer quotation with snapshot lines | Admin & Staff |
+| `GET` | `/api/quotations/<id>/` | Retrieve quotation details and pricing breakdown | Authenticated |
+| `POST` | `/api/quotations/<id>/finalize/` | Finalize draft quotation to QUOTATION status | Admin & Staff |
+| `POST` | `/api/quotations/<id>/confirm/` | Confirm quotation acceptance | Customer, Staff, Admin |
+| `POST` | `/api/quotations/<id>/cancel/` | Cancel quotation | Admin & Staff |
+| `GET` | `/api/quotations/<id>/pdf/` | Stream/download ReportLab quotation PDF | Authenticated |
+| `POST` | `/api/quotations/<id>/send-email/` | Dispatch PDF proposal via email and log dispatch | Admin & Staff |
+| `GET` | `/api/quotations/<id>/history/` | Audit log of quotation status transitions | Authenticated |
+
+### Subscriptions (`/api/subscriptions/`)
+| Method | Endpoint | Description | Clearance |
+|---|---|---|---|
+| `POST` | `/api/subscriptions/convert/<quotation_id>/` | Convert confirmed quotation to subscription | Admin & Staff |
+| `GET` | `/api/subscriptions/` | List subscriptions (Customer filtered to own) | Authenticated |
+| `GET` | `/api/subscriptions/<id>/` | Retrieve subscription and itemized snapshots | Authenticated |
+| `POST` | `/api/subscriptions/<id>/activate/` | Activate confirmed subscription | Admin & Staff |
+| `POST` | `/api/subscriptions/<id>/pause/` | Pause active subscription (requires reason) | Admin & Staff |
+| `POST` | `/api/subscriptions/<id>/resume/` | Resume paused subscription | Admin & Staff |
+| `POST` | `/api/subscriptions/<id>/renew/` | Renew subscription, creating linked contract | Admin & Staff |
+| `POST` | `/api/subscriptions/<id>/close/` | Close/terminate subscription contract | Admin & Staff |
+| `GET` | `/api/subscriptions/<id>/history/` | Audit trail of subscription status transitions | Authenticated |
+| `GET` | `/api/subscriptions/<id>/renewals/` | View subscription renewal chain | Authenticated |
+
 ---
 
 ## Running the Application
@@ -115,9 +170,11 @@ venv\Scripts\activate   # On Windows
 
 pip install -r requirements.txt
 python manage.py migrate
-python manage.py seedusers     # Seeds default admin, staff, and customer accounts
-python manage.py seedproducts  # Seeds realistic software products & variants
-python manage.py seedplans     # Seeds realistic subscription plans
+python manage.py seedusers        # Seeds default admin, staff, and customer accounts
+python manage.py seedproducts     # Seeds realistic software products & variants
+python manage.py seedplans        # Seeds realistic subscription plans
+python manage.py seedquotations   # Seeds quotation templates and sample quotations
+python manage.py seedsubscriptions# Seeds active and paused subscriptions
 python manage.py runserver
 ```
 

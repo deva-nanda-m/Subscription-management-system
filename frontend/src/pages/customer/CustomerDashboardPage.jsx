@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
@@ -59,28 +60,30 @@ export const CustomerDashboardPage = () => {
           </div>
         </div>
 
-        {/* Feature Overview Modules (Preparation for Modules 4 & 6) */}
+        {/* Active Customer Modules (Part 1 Workflow) */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Subscriptions Card */}
+          {/* Quotations Card */}
           <Card>
             <CardHeader
-              title="My Subscriptions"
-              subtitle="View and manage active recurring plans and renewal schedules."
+              title="My Software Quotations"
+              subtitle="View proposals, download ReportLab PDFs, and accept terms."
               action={
-                <span className="text-xs px-2.5 py-1 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 font-semibold">
-                  Module 4
-                </span>
+                <Link to="/customer/quotations">
+                  <Button variant="primary" size="sm" icon={FileText}>
+                    View Proposals
+                  </Button>
+                </Link>
               }
             />
             <CardBody className="space-y-4">
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
-                <div className="p-2.5 rounded-lg bg-indigo-100 text-indigo-600 shrink-0">
-                  <CreditCard className="w-5 h-5" />
+                <div className="p-2.5 rounded-lg bg-blue-100 text-blue-600 shrink-0">
+                  <FileText className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-900">Subscription Lifecycle Engine</h4>
+                  <h4 className="text-sm font-semibold text-slate-900">Quotation Approval & Sign-off</h4>
                   <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                    Once Module 4 is activated, you will be able to subscribe to Brightloop software tiers (daily, weekly, monthly, annual), pause billing cycles, or upgrade plans seamlessly.
+                    Review software packages, pricing discounts, and commercial terms prepared by Brightloop staff. Accept quotations to immediately initiate subscription contracts.
                   </p>
                 </div>
               </div>
@@ -92,33 +95,35 @@ export const CustomerDashboardPage = () => {
             </CardBody>
           </Card>
 
-          {/* Invoices Card */}
+          {/* Subscriptions Card */}
           <Card>
             <CardHeader
-              title="Invoices & Payment Receipts"
-              subtitle="Review and download official tax-compliant invoices."
+              title="My Subscriptions"
+              subtitle="View and manage active recurring plans and renewal schedules."
               action={
-                <span className="text-xs px-2.5 py-1 rounded-md bg-cyan-50 text-cyan-700 border border-cyan-200 font-semibold">
-                  Module 6
-                </span>
+                <Link to="/customer/subscriptions">
+                  <Button variant="primary" size="sm" icon={CreditCard}>
+                    Manage Plans
+                  </Button>
+                </Link>
               }
             />
             <CardBody className="space-y-4">
               <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 flex items-start gap-3">
-                <div className="p-2.5 rounded-lg bg-cyan-100 text-cyan-600 shrink-0">
-                  <FileText className="w-5 h-5" />
+                <div className="p-2.5 rounded-lg bg-indigo-100 text-indigo-600 shrink-0">
+                  <CreditCard className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold text-slate-900">Automated Invoice Generation</h4>
+                  <h4 className="text-sm font-semibold text-slate-900">Subscription Lifecycle Engine</h4>
                   <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                    Once Module 6 is deployed, your recurring billing charges will automatically generate downloadable PDF invoices with localized taxes and itemized discounts.
+                    Track recurring billing cycles, check service activation status, and verify scheduled next billing dates for all active licenses.
                   </p>
                 </div>
               </div>
 
               <div className="text-xs text-slate-400 flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                <span>Encrypted delivery with cryptographically verified JWT bearer tokens.</span>
+                <span>Active automated renewal handling and service entitlement.</span>
               </div>
             </CardBody>
           </Card>

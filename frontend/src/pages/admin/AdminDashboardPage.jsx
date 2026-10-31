@@ -182,15 +182,47 @@ export const AdminDashboardPage = () => {
                 </span>
               </Link>
 
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-xs">
-                <div className="flex items-center gap-2 font-medium text-slate-700">
-                  <Calendar className="w-4 h-4 text-emerald-500" />
-                  <span>Module 4: Subscription Lifecycle Management</span>
+              <Link
+                to="/admin/quotation-templates"
+                className="flex items-center justify-between p-2.5 rounded-lg bg-indigo-50/60 border border-indigo-100 hover:bg-indigo-50 text-xs transition-colors"
+              >
+                <div className="flex items-center gap-2 font-medium text-slate-900">
+                  <Layers className="w-4 h-4 text-indigo-600" />
+                  <span>Part 1: Quotation Templates & Proposals</span>
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-semibold">
-                  Upcoming
+                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  Active
                 </span>
-              </div>
+              </Link>
+
+              <Link
+                to="/admin/quotations"
+                className="flex items-center justify-between p-2.5 rounded-lg bg-indigo-50/60 border border-indigo-100 hover:bg-indigo-50 text-xs transition-colors"
+              >
+                <div className="flex items-center gap-2 font-medium text-slate-900">
+                  <Activity className="w-4 h-4 text-indigo-600" />
+                  <span>Part 1: Quotations & PDF Generation</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  Active
+                </span>
+              </Link>
+
+              <Link
+                to="/admin/subscriptions"
+                className="flex items-center justify-between p-2.5 rounded-lg bg-indigo-50/60 border border-indigo-100 hover:bg-indigo-50 text-xs transition-colors"
+              >
+                <div className="flex items-center gap-2 font-medium text-slate-900">
+                  <ShieldCheck className="w-4 h-4 text-indigo-600" />
+                  <span>Part 1: Subscriptions Lifecycle Engine</span>
+                </div>
+                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  Active
+                </span>
+              </Link>
             </CardBody>
           </Card>
         </div>

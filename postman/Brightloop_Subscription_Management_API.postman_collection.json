@@ -788,6 +788,514 @@
           }
         }
       ]
+    },
+    {
+      "name": "Part 1 - Quotation Management",
+      "item": [
+        {
+          "name": "List Quotation Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/quotation-templates/",
+              "host": ["{{base_url}}"],
+              "path": ["quotation-templates", ""]
+            },
+            "description": "Returns paginated list of reusable quotation templates with bundled products, variants, and plans."
+          }
+        },
+        {
+          "name": "Create Quotation Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Enterprise Software Suite Bundle\",\n  \"description\": \"Comprehensive enterprise accounting and collaboration bundle.\",\n  \"validity_days\": 30,\n  \"is_active\": true,\n  \"lines\": [\n    {\n      \"product\": 1,\n      \"plan\": 1,\n      \"quantity\": 2\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/quotation-templates/",
+              "host": ["{{base_url}}"],
+              "path": ["quotation-templates", ""]
+            },
+            "description": "Creates a reusable quotation template. Admin & Staff only."
+          }
+        },
+        {
+          "name": "Customer Lookup for Quotes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/customers/lookup/",
+              "host": ["{{base_url}}"],
+              "path": ["customers", "lookup", ""]
+            },
+            "description": "Returns active customer accounts for selection during quotation creation. Admin & Staff only."
+          }
+        },
+        {
+          "name": "List Quotations",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/quotations/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", ""]
+            },
+            "description": "Lists quotations. Staff and Admin see all quotations; Customer users only see their own."
+          }
+        },
+        {
+          "name": "Create Customer Quotation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"customer\": 3,\n  \"template\": 1,\n  \"validity_days\": 15,\n  \"notes\": \"Special discount proposal for annual term.\",\n  \"terms_and_conditions\": \"Net 30 payment terms upon contract activation.\",\n  \"lines\": [\n    {\n      \"product\": 1,\n      \"plan\": 1,\n      \"quantity\": 2,\n      \"discount_percentage\": \"10.00\",\n      \"tax_rate\": \"18.00\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/quotations/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", ""]
+            },
+            "description": "Creates a customer quotation taking immutable price and tax snapshots. Initial status is DRAFT."
+          }
+        },
+        {
+          "name": "Get Quotation Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/quotations/1/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", "1", ""]
+            },
+            "description": "Returns quotation specifications, pricing snapshot, line items, and email dispatch history."
+          }
+        },
+        {
+          "name": "Finalize Quotation (Draft -> Quotation)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Finalized after sales manager approval.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/quotations/1/finalize/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", "1", "finalize", ""]
+            },
+            "description": "Transitions quotation status from DRAFT to QUOTATION (Issued). Admin and Staff only."
+          }
+        },
+        {
+          "name": "Confirm Quotation (Quotation -> Confirmed)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Accepted and confirmed by customer.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/quotations/1/confirm/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", "1", "confirm", ""]
+            },
+            "description": "Customer, Staff or Admin confirms quotation acceptance. Makes quotation eligible for subscription conversion."
+          }
+        },
+        {
+          "name": "Cancel Quotation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Customer requested cancellation.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/quotations/1/cancel/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", "1", "cancel", ""]
+            },
+            "description": "Cancels a DRAFT or QUOTATION status quotation."
+          }
+        },
+        {
+          "name": "Download Branded Quotation PDF",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/quotations/1/pdf/?download=true",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", "1", "pdf", ""],
+              "query": [
+                {
+                  "key": "download",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Generates and streams high-resolution ReportLab PDF with brand header, line item table, pricing and signature blocks."
+          }
+        },
+        {
+          "name": "Send Quotation by Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipient_email\": \"customer@example.com\",\n  \"subject\": \"Brightloop Software - Subscription Quotation\",\n  \"message\": \"Please find attached your subscription proposal. Let us know if you have any questions!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/quotations/1/send-email/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", "1", "send-email", ""]
+            },
+            "description": "Attaches ReportLab PDF and dispatches quotation email to recipient, logging dispatch history."
+          }
+        },
+        {
+          "name": "Get Quotation Status Audit History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/quotations/1/history/",
+              "host": ["{{base_url}}"],
+              "path": ["quotations", "1", "history", ""]
+            },
+            "description": "Returns immutable status change audit trail for the quotation."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part 1 - Subscription Lifecycle Management",
+      "item": [
+        {
+          "name": "Convert Confirmed Quotation to Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"start_date\": \"2026-11-01\",\n  \"payment_terms\": \"Net 30\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/subscriptions/convert/1/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "convert", "1", ""]
+            },
+            "description": "Atomically converts a CONFIRMED quotation into an operational Subscription with copied price snapshots and next billing date calculation. Prevents duplicate conversions."
+          }
+        },
+        {
+          "name": "List Subscriptions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/subscriptions/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", ""]
+            },
+            "description": "Lists subscriptions. Filterable by status (ACTIVE, CONFIRMED, CLOSED) and is_paused boolean."
+          }
+        },
+        {
+          "name": "Get Subscription Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", ""]
+            },
+            "description": "Returns full subscription record, items, pause operational history, and renewal history."
+          }
+        },
+        {
+          "name": "Activate Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Onboarding completed, service credentials released.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/activate/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", "activate", ""]
+            },
+            "description": "Activates a CONFIRMED subscription, commencing billing intervals."
+          }
+        },
+        {
+          "name": "Pause Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Customer requested temporary seasonal hold on accounting seats.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/pause/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", "pause", ""]
+            },
+            "description": "Pauses an active subscription and logs pause history with mandatory reason."
+          }
+        },
+        {
+          "name": "Resume Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Customer requested reactivation.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/resume/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", "resume", ""]
+            },
+            "description": "Resumes a paused subscription, closing the pause history record and restoring active status."
+          }
+        },
+        {
+          "name": "Renew Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"start_date\": \"2027-11-01\",\n  \"end_date\": \"2028-10-31\",\n  \"reason\": \"Annual contract renewal\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/renew/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", "renew", ""]
+            },
+            "description": "Creates a new renewed subscription linked via SubscriptionRenewal to the previous subscription."
+          }
+        },
+        {
+          "name": "Close Subscription",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"Contract period ended and customer chose not to renew.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/close/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", "close", ""]
+            },
+            "description": "Permanently terminates a subscription."
+          }
+        },
+        {
+          "name": "Get Subscription Status Audit History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/history/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", "history", ""]
+            },
+            "description": "Returns status transition audit trail for the subscription."
+          }
+        },
+        {
+          "name": "Get Subscription Renewal Chain",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/subscriptions/1/renewals/",
+              "host": ["{{base_url}}"],
+              "path": ["subscriptions", "1", "renewals", ""]
+            },
+            "description": "Returns linked previous and subsequent subscription renewal contracts."
+          }
+        }
+      ]
     }
   ]
 }

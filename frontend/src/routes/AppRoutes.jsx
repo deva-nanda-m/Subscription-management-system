@@ -23,8 +23,19 @@ import StaffDashboardPage from '../pages/staff/StaffDashboardPage';
 import StaffProductCatalogPage from '../pages/staff/StaffProductCatalogPage';
 import StaffPlanListPage from '../pages/staff/StaffPlanListPage';
 
+// Quotation and Subscription Pages
+import QuotationTemplateListPage from '../pages/admin/QuotationTemplateListPage';
+import CreateQuotationTemplatePage from '../pages/admin/CreateQuotationTemplatePage';
+import QuotationListPage from '../pages/admin/QuotationListPage';
+import CreateQuotationPage from '../pages/admin/CreateQuotationPage';
+import QuotationDetailPage from '../pages/admin/QuotationDetailPage';
+import SubscriptionListPage from '../pages/admin/SubscriptionListPage';
+import SubscriptionDetailPage from '../pages/admin/SubscriptionDetailPage';
+
 import CustomerDashboardPage from '../pages/customer/CustomerDashboardPage';
 import CustomerProductCatalogPage from '../pages/customer/CustomerProductCatalogPage';
+import CustomerQuotationListPage from '../pages/customer/CustomerQuotationListPage';
+import CustomerSubscriptionListPage from '../pages/customer/CustomerSubscriptionListPage';
 
 // Root index redirector
 const RootRedirect = () => {
@@ -129,6 +140,64 @@ export const AppRoutes = () => {
         }
       />
 
+      {/* Quotation & Subscription Management (Admin) */}
+      <Route
+        path="/admin/quotation-templates"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <QuotationTemplateListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/quotation-templates/new"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <CreateQuotationTemplatePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/quotations"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <QuotationListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/quotations/new"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <CreateQuotationPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/quotations/:id"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <QuotationDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/subscriptions"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <SubscriptionListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/subscriptions/:id"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <SubscriptionDetailPage />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Staff Routes */}
       <Route
         path="/staff/dashboard"
@@ -154,6 +223,62 @@ export const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/staff/quotation-templates"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <QuotationTemplateListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/quotation-templates/new"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <CreateQuotationTemplatePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/quotations"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <QuotationListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/quotations/new"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <CreateQuotationPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/quotations/:id"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <QuotationDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/subscriptions"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <SubscriptionListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/subscriptions/:id"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <SubscriptionDetailPage />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Customer Routes */}
       <Route
@@ -169,6 +294,22 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={['CUSTOMER']}>
             <CustomerProductCatalogPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customer/quotations"
+        element={
+          <ProtectedRoute allowedRoles={['CUSTOMER']}>
+            <CustomerQuotationListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customer/subscriptions"
+        element={
+          <ProtectedRoute allowedRoles={['CUSTOMER']}>
+            <CustomerSubscriptionListPage />
           </ProtectedRoute>
         }
       />

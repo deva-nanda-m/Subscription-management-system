@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import DashboardLayout from '../../layouts/DashboardLayout';
 import { Card, CardHeader, CardBody } from '../../components/ui/Card';
 import { RoleBadge } from '../../components/ui/Badge';
+import Button from '../../components/ui/Button';
 import {
   Briefcase,
   CreditCard,
@@ -13,6 +15,9 @@ import {
   CheckCircle2,
   AlertCircle,
   HelpCircle,
+  Layers,
+  ArrowRight,
+  Plus,
 } from 'lucide-react';
 
 export const StaffDashboardPage = () => {
@@ -53,60 +58,63 @@ export const StaffDashboardPage = () => {
           </div>
         </div>
 
-        {/* Operational Metrics */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {/* Operational Quick Actions (Part 1 Workflow) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
-            <CardBody className="p-5 flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase">Subscriptions</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">Ready for M4</p>
-                <p className="text-xs text-slate-500 mt-1">Lifecycle monitoring</p>
-              </div>
-              <div className="w-11 h-11 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
-                <CreditCard className="w-5 h-5" />
+            <CardHeader
+              title="Quotation Templates"
+              subtitle="Reusable standardized software proposal blueprints."
+            />
+            <CardBody className="space-y-3">
+              <p className="text-xs text-slate-600">
+                Create and manage template packages with preconfigured product lines, tiers and validity terms.
+              </p>
+              <Link to="/staff/quotation-templates" className="block">
+                <Button variant="secondary" size="sm" icon={Layers} className="w-full">
+                  Manage Templates
+                </Button>
+              </Link>
+            </CardBody>
+          </Card>
+
+          <Card>
+            <CardHeader
+              title="Customer Quotations"
+              subtitle="Issue customer quotes and convert to contracts."
+            />
+            <CardBody className="space-y-3">
+              <p className="text-xs text-slate-600">
+                Generate customer-tailored quotes, preview ReportLab PDFs, email proposals, and execute conversions.
+              </p>
+              <div className="flex gap-2">
+                <Link to="/staff/quotations" className="flex-1">
+                  <Button variant="secondary" size="sm" icon={FileText} className="w-full">
+                    View Quotes
+                  </Button>
+                </Link>
+                <Link to="/staff/quotations/new">
+                  <Button variant="primary" size="sm" icon={Plus}>
+                    New Quote
+                  </Button>
+                </Link>
               </div>
             </CardBody>
           </Card>
 
           <Card>
-            <CardBody className="p-5 flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase">Invoices Pending</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">Ready for M6</p>
-                <p className="text-xs text-slate-500 mt-1">Billing cycle engine</p>
-              </div>
-              <div className="w-11 h-11 rounded-lg bg-cyan-50 text-cyan-600 flex items-center justify-center">
-                <FileText className="w-5 h-5" />
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody className="p-5 flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase">Customer Directory</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">Active</p>
-                <p className="text-xs text-slate-500 mt-1">View verified accounts</p>
-              </div>
-              <div className="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
-                <Users className="w-5 h-5" />
-              </div>
-            </CardBody>
-          </Card>
-
-          <Card>
-            <CardBody className="p-5 flex items-center justify-between">
-              <div>
-                <p className="text-xs font-semibold text-slate-500 uppercase">System Uptime</p>
-                <p className="text-2xl font-bold text-slate-900 mt-1">99.98%</p>
-                <p className="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>All services nominal</span>
-                </p>
-              </div>
-              <div className="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
-                <Clock className="w-5 h-5" />
-              </div>
+            <CardHeader
+              title="Subscription Contracts"
+              subtitle="Manage active customer recurring licenses."
+            />
+            <CardBody className="space-y-3">
+              <p className="text-xs text-slate-600">
+                Monitor recurring commitments, track operational pause/resume events, and issue renewals.
+              </p>
+              <Link to="/staff/subscriptions" className="block">
+                <Button variant="secondary" size="sm" icon={CreditCard} className="w-full">
+                  Browse Subscriptions
+                </Button>
+              </Link>
             </CardBody>
           </Card>
         </div>

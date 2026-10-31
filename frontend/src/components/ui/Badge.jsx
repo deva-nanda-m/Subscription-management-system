@@ -201,6 +201,86 @@ export const AvailabilityBadge = ({ isCurrentlyAvailable, availabilityDisplay })
   );
 };
 
+export const QuotationStatusBadge = ({ status }) => {
+  const normalized = (status || '').toUpperCase();
+  if (normalized === 'DRAFT') {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+        Draft
+      </span>
+    );
+  }
+  if (normalized === 'QUOTATION') {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+        Issued
+      </span>
+    );
+  }
+  if (normalized === 'CONFIRMED') {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+        Confirmed
+      </span>
+    );
+  }
+  if (normalized === 'EXPIRED') {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-300">
+        Expired
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+      Cancelled
+    </span>
+  );
+};
+
+export const SubscriptionStatusBadge = ({ status, isPaused }) => {
+  const normalized = (status || '').toUpperCase();
+
+  if (isPaused) {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-300">
+        <PauseCircle className="w-3 h-3 text-amber-600" />
+        Paused
+      </span>
+    );
+  }
+  if (normalized === 'ACTIVE') {
+    return (
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        Active
+      </span>
+    );
+  }
+  if (normalized === 'CONFIRMED') {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200">
+        <CheckCircle2 className="w-3 h-3 text-indigo-600" />
+        Confirmed
+      </span>
+    );
+  }
+  if (normalized === 'CLOSED') {
+    return (
+      <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-300">
+        <Lock className="w-3 h-3 text-slate-400" />
+        Closed
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+      {status || 'Draft'}
+    </span>
+  );
+};
+
 export default Badge;
 
 
