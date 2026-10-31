@@ -74,6 +74,34 @@ A production-grade, enterprise-scale subscription management platform designed t
   - `close_expired_subscriptions_task`: Closes subscriptions whose fixed end date has elapsed.
 - **Audit Logging:** Comprehensive status history tracking for both quotations (`QuotationStatusHistory`) and subscriptions (`SubscriptionStatusHistory`).
 
+### Part 2: Tax, Discount, Invoice, Payment and Reporting Management
+- **Tax Management:**
+  - Configurable statutory tax rules (`GST 18%`, `GST 12%`, `GST 5%`, `Zero Tax 0%`).
+  - Strict `DecimalField(max_digits=5, decimal_places=2)` arithmetic. Historical invoices snapshot the applied tax rate at generation time and are immune to subsequent rule changes.
+  - Role-based permissions: Admin creates/edits/deactivates tax rules; Staff views applicable rates.
+- **Discount Management:**
+  - Rules and coupons (`PERCENTAGE` or `FIXED_AMOUNT`) with target scopes (`GLOBAL`, `PRODUCT`, `PLAN`).
+  - Minimum purchase thresholds, start/end validity dates, and usage caps (`max_usage_limit`).
+  - Safe concurrency: Usage count is incremented using atomic database expressions (`F('current_usage_count') + 1`) to eliminate race conditions.
+- **Invoice Management & Billing Engine:**
+  - Unique composite constraint `unique_subscription_billing_period` on `['subscription', 'billing_period_start', 'billing_period_end']` to prevent duplicate billing.
+  - Safe calendar math handling month-ends (e.g. Jan 31 -> Feb 28/29) and leap years.
+  - Immutable line item snapshots (`unit_price`, `quantity`, `tax_rate`, `tax_amount`, `discount_amount`, `line_total`).
+  - Lifecycle: `DRAFT` $\to$ `CONFIRMED` $\to$ `PARTIALLY_PAID` / `PAID` / `OVERDUE` / `CANCELLED`.
+  - ReportLab PDF Engine: Generates branded vector tax invoices with statutory metadata, customer details, itemized breakdown, and terms.
+  - Email Engine: Dispatches tax invoices with attached PDF documents to customer email addresses and records immutable dispatch logs.
+- **Automated Recurring Billing (Celery & Redis):**
+  - Celery Beat schedule runs hourly (`generate_recurring_invoices_hourly`) and daily overdue checks (`check_overdue_invoices_daily`).
+  - Reconciles active subscriptions where `next_billing_date <= today`, creates cycle invoices, and updates subscription dates atomically.
+- **Payment Management & Razorpay Gateway:**
+  - Multi-channel support: Offline manual recording (`CASH`, `BANK_TRANSFER`, `UPI`, `CARD`, `OTHER`) and Online checkout (`ONLINE_RAZORPAY`).
+  - Automatic invoice balance reconciliation (`amount_paid`, `outstanding_amount`, status transition to `PAID`).
+  - Razorpay Integration: Order creation (paise conversion), frontend checkout modal (`checkout.js`), HMAC SHA256 signature verification, and secure webhook handler (`/api/payments/razorpay-webhook/`).
+- **Financial Dashboard & Executive Reporting:**
+  - High-performance database aggregation (MRR, total billed, revenue collected, outstanding receivables, aging delinquent queue).
+  - Monthly collection trends, channel distribution, and subscription health indicators.
+  - Streaming CSV export engine for revenue, invoices, payments, and subscriptions.
+
 ---
 
 ## API Endpoints Overview
@@ -175,6 +203,8 @@ python manage.py seedproducts     # Seeds realistic software products & variants
 python manage.py seedplans        # Seeds realistic subscription plans
 python manage.py seedquotations   # Seeds quotation templates and sample quotations
 python manage.py seedsubscriptions# Seeds active and paused subscriptions
+python manage.py seedtaxes        # Seeds statutory GST tax rules and discount campaigns
+python manage.py seedinvoices     # Seeds sample cycle invoices and payment receipts
 python manage.py runserver
 ```
 

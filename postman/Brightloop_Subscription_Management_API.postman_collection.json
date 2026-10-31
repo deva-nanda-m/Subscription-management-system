@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "b8d27e2a-14c4-4b57-a9a3-brightloop001",
     "name": "Brightloop Software - Subscription Management System API",
-    "description": "API collection for Brightloop Subscription Management System:\n- Module 1: Authentication & Role Management\n- Module 2: Product & Product Variant Management",
+    "description": "API collection for Brightloop Subscription Management System:\n- Module 1: Authentication & Role Management\n- Module 2: Product & Product Variant Management\n- Part 1: Quotations & Subscription Lifecycles\n- Part 2: Tax, Discount, Invoice, Payment & Financial Reporting",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -42,8 +42,14 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/register/",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "register", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "register",
+                ""
+              ]
             },
             "description": "Registers a new customer. Automatically assigns the CUSTOMER role."
           }
@@ -80,8 +86,14 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/login/",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "login", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "login",
+                ""
+              ]
             },
             "description": "Authenticates user using email and password. Returns access and refresh JWT tokens."
           }
@@ -116,8 +128,15 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/token/refresh/",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "token", "refresh", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "token",
+                "refresh",
+                ""
+              ]
             }
           }
         },
@@ -133,8 +152,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/auth/me/",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "me", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me",
+                ""
+              ]
             }
           }
         },
@@ -158,8 +183,14 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/logout/",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "logout", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout",
+                ""
+              ]
             }
           }
         }
@@ -184,8 +215,14 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/forgot-password/",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "forgot-password", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "forgot-password",
+                ""
+              ]
             }
           }
         },
@@ -205,8 +242,14 @@
             },
             "url": {
               "raw": "{{base_url}}/auth/reset-password/",
-              "host": ["{{base_url}}"],
-              "path": ["auth", "reset-password", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "reset-password",
+                ""
+              ]
             }
           }
         }
@@ -227,11 +270,23 @@
             ],
             "url": {
               "raw": "{{base_url}}/admin/staff/?search=&status=",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "staff", ""],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "staff",
+                ""
+              ],
               "query": [
-                { "key": "search", "value": "" },
-                { "key": "status", "value": "" }
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                }
               ]
             }
           }
@@ -256,8 +311,14 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/staff/",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "staff", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "staff",
+                ""
+              ]
             }
           }
         },
@@ -281,8 +342,16 @@
             },
             "url": {
               "raw": "{{base_url}}/admin/staff/2/status/",
-              "host": ["{{base_url}}"],
-              "path": ["admin", "staff", "2", "status", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "admin",
+                "staff",
+                "2",
+                "status",
+                ""
+              ]
             }
           }
         }
@@ -303,12 +372,26 @@
             ],
             "url": {
               "raw": "{{base_url}}/products/?search=&category=&status=",
-              "host": ["{{base_url}}"],
-              "path": ["products", ""],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                ""
+              ],
               "query": [
-                { "key": "search", "value": "" },
-                { "key": "category", "value": "" },
-                { "key": "status", "value": "" }
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "category",
+                  "value": ""
+                },
+                {
+                  "key": "status",
+                  "value": ""
+                }
               ]
             },
             "description": "Lists all products. Filtered to active only for customers."
@@ -334,8 +417,13 @@
             },
             "url": {
               "raw": "{{base_url}}/products/",
-              "host": ["{{base_url}}"],
-              "path": ["products", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                ""
+              ]
             },
             "description": "Admin only. Creates a new core product."
           }
@@ -352,8 +440,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/products/1/",
-              "host": ["{{base_url}}"],
-              "path": ["products", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                ""
+              ]
             },
             "description": "Returns product details and its list of variants."
           }
@@ -378,8 +472,14 @@
             },
             "url": {
               "raw": "{{base_url}}/products/1/",
-              "host": ["{{base_url}}"],
-              "path": ["products", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                ""
+              ]
             }
           }
         },
@@ -403,8 +503,15 @@
             },
             "url": {
               "raw": "{{base_url}}/products/1/status/",
-              "host": ["{{base_url}}"],
-              "path": ["products", "1", "status", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "status",
+                ""
+              ]
             }
           }
         },
@@ -420,8 +527,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/products/1/",
-              "host": ["{{base_url}}"],
-              "path": ["products", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                ""
+              ]
             }
           }
         }
@@ -442,8 +555,15 @@
             ],
             "url": {
               "raw": "{{base_url}}/products/1/variants/",
-              "host": ["{{base_url}}"],
-              "path": ["products", "1", "variants", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "variants",
+                ""
+              ]
             }
           }
         },
@@ -467,8 +587,15 @@
             },
             "url": {
               "raw": "{{base_url}}/products/1/variants/",
-              "host": ["{{base_url}}"],
-              "path": ["products", "1", "variants", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "products",
+                "1",
+                "variants",
+                ""
+              ]
             }
           }
         },
@@ -484,8 +611,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/variants/1/",
-              "host": ["{{base_url}}"],
-              "path": ["variants", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "1",
+                ""
+              ]
             }
           }
         },
@@ -509,8 +642,14 @@
             },
             "url": {
               "raw": "{{base_url}}/variants/1/",
-              "host": ["{{base_url}}"],
-              "path": ["variants", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "1",
+                ""
+              ]
             }
           }
         },
@@ -534,8 +673,15 @@
             },
             "url": {
               "raw": "{{base_url}}/variants/1/status/",
-              "host": ["{{base_url}}"],
-              "path": ["variants", "1", "status", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "1",
+                "status",
+                ""
+              ]
             }
           }
         },
@@ -551,8 +697,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/variants/1/",
-              "host": ["{{base_url}}"],
-              "path": ["variants", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "variants",
+                "1",
+                ""
+              ]
             }
           }
         }
@@ -573,8 +725,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/plans/metrics/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "metrics", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "metrics",
+                ""
+              ]
             },
             "description": "Returns aggregated plan counts (total, active, paused, closed, currently available) and billing interval distribution."
           }
@@ -591,13 +749,34 @@
             ],
             "url": {
               "raw": "{{base_url}}/plans/?search=&billing_interval=&status=&available_only=",
-              "host": ["{{base_url}}"],
-              "path": ["plans", ""],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                ""
+              ],
               "query": [
-                { "key": "search", "value": "", "description": "Filter by plan name, code, product name, or variant" },
-                { "key": "billing_interval", "value": "", "description": "DAILY, WEEKLY, MONTHLY, or YEARLY" },
-                { "key": "status", "value": "", "description": "ACTIVE, PAUSED, CLOSED, or INACTIVE" },
-                { "key": "available_only", "value": "", "description": "Set to true to show only currently open plans" }
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "Filter by plan name, code, product name, or variant"
+                },
+                {
+                  "key": "billing_interval",
+                  "value": "",
+                  "description": "DAILY, WEEKLY, MONTHLY, or YEARLY"
+                },
+                {
+                  "key": "status",
+                  "value": "",
+                  "description": "ACTIVE, PAUSED, CLOSED, or INACTIVE"
+                },
+                {
+                  "key": "available_only",
+                  "value": "",
+                  "description": "Set to true to show only currently open plans"
+                }
               ]
             },
             "description": "Lists paginated subscription plans with filtering, search, and sorting capabilities."
@@ -623,8 +802,13 @@
             },
             "url": {
               "raw": "{{base_url}}/plans/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                ""
+              ]
             },
             "description": "Creates a new subscription plan with lifecycle policies and billing intervals."
           }
@@ -641,8 +825,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/plans/1/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "1",
+                ""
+              ]
             },
             "description": "Retrieves comprehensive subscription plan details including associated product/variant and lifecycle audit trail."
           }
@@ -667,8 +857,14 @@
             },
             "url": {
               "raw": "{{base_url}}/plans/1/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "1",
+                ""
+              ]
             },
             "description": "Partially updates an existing subscription plan. Closed plans cannot be updated."
           }
@@ -693,8 +889,15 @@
             },
             "url": {
               "raw": "{{base_url}}/plans/1/pause/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "1", "pause", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "1",
+                "pause",
+                ""
+              ]
             },
             "description": "Transitions an ACTIVE plan to PAUSED status. Only valid if allow_pause=true."
           }
@@ -719,8 +922,15 @@
             },
             "url": {
               "raw": "{{base_url}}/plans/1/resume/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "1", "resume", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "1",
+                "resume",
+                ""
+              ]
             },
             "description": "Transitions a PAUSED plan back to ACTIVE status."
           }
@@ -745,8 +955,15 @@
             },
             "url": {
               "raw": "{{base_url}}/plans/1/close/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "1", "close", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "1",
+                "close",
+                ""
+              ]
             },
             "description": "Transitions a plan permanently to CLOSED status. Requires allow_early_closure or passed availability window. Cannot be undone."
           }
@@ -763,8 +980,15 @@
             ],
             "url": {
               "raw": "{{base_url}}/plans/1/history/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "1", "history", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "1",
+                "history",
+                ""
+              ]
             },
             "description": "Returns full chronological audit log of all status transitions for the plan."
           }
@@ -781,8 +1005,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/plans/1/",
-              "host": ["{{base_url}}"],
-              "path": ["plans", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "plans",
+                "1",
+                ""
+              ]
             },
             "description": "Deletes a subscription plan."
           }
@@ -804,8 +1034,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/quotation-templates/",
-              "host": ["{{base_url}}"],
-              "path": ["quotation-templates", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotation-templates",
+                ""
+              ]
             },
             "description": "Returns paginated list of reusable quotation templates with bundled products, variants, and plans."
           }
@@ -830,8 +1065,13 @@
             },
             "url": {
               "raw": "{{base_url}}/quotation-templates/",
-              "host": ["{{base_url}}"],
-              "path": ["quotation-templates", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotation-templates",
+                ""
+              ]
             },
             "description": "Creates a reusable quotation template. Admin & Staff only."
           }
@@ -848,8 +1088,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/customers/lookup/",
-              "host": ["{{base_url}}"],
-              "path": ["customers", "lookup", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "customers",
+                "lookup",
+                ""
+              ]
             },
             "description": "Returns active customer accounts for selection during quotation creation. Admin & Staff only."
           }
@@ -866,8 +1112,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/quotations/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                ""
+              ]
             },
             "description": "Lists quotations. Staff and Admin see all quotations; Customer users only see their own."
           }
@@ -892,8 +1143,13 @@
             },
             "url": {
               "raw": "{{base_url}}/quotations/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                ""
+              ]
             },
             "description": "Creates a customer quotation taking immutable price and tax snapshots. Initial status is DRAFT."
           }
@@ -910,8 +1166,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/quotations/1/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "1",
+                ""
+              ]
             },
             "description": "Returns quotation specifications, pricing snapshot, line items, and email dispatch history."
           }
@@ -936,8 +1198,15 @@
             },
             "url": {
               "raw": "{{base_url}}/quotations/1/finalize/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", "1", "finalize", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "1",
+                "finalize",
+                ""
+              ]
             },
             "description": "Transitions quotation status from DRAFT to QUOTATION (Issued). Admin and Staff only."
           }
@@ -962,8 +1231,15 @@
             },
             "url": {
               "raw": "{{base_url}}/quotations/1/confirm/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", "1", "confirm", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "1",
+                "confirm",
+                ""
+              ]
             },
             "description": "Customer, Staff or Admin confirms quotation acceptance. Makes quotation eligible for subscription conversion."
           }
@@ -988,8 +1264,15 @@
             },
             "url": {
               "raw": "{{base_url}}/quotations/1/cancel/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", "1", "cancel", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "1",
+                "cancel",
+                ""
+              ]
             },
             "description": "Cancels a DRAFT or QUOTATION status quotation."
           }
@@ -1006,8 +1289,15 @@
             ],
             "url": {
               "raw": "{{base_url}}/quotations/1/pdf/?download=true",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", "1", "pdf", ""],
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "1",
+                "pdf",
+                ""
+              ],
               "query": [
                 {
                   "key": "download",
@@ -1038,8 +1328,15 @@
             },
             "url": {
               "raw": "{{base_url}}/quotations/1/send-email/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", "1", "send-email", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "1",
+                "send-email",
+                ""
+              ]
             },
             "description": "Attaches ReportLab PDF and dispatches quotation email to recipient, logging dispatch history."
           }
@@ -1056,8 +1353,15 @@
             ],
             "url": {
               "raw": "{{base_url}}/quotations/1/history/",
-              "host": ["{{base_url}}"],
-              "path": ["quotations", "1", "history", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "quotations",
+                "1",
+                "history",
+                ""
+              ]
             },
             "description": "Returns immutable status change audit trail for the quotation."
           }
@@ -1087,8 +1391,15 @@
             },
             "url": {
               "raw": "{{base_url}}/subscriptions/convert/1/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "convert", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "convert",
+                "1",
+                ""
+              ]
             },
             "description": "Atomically converts a CONFIRMED quotation into an operational Subscription with copied price snapshots and next billing date calculation. Prevents duplicate conversions."
           }
@@ -1105,8 +1416,13 @@
             ],
             "url": {
               "raw": "{{base_url}}/subscriptions/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                ""
+              ]
             },
             "description": "Lists subscriptions. Filterable by status (ACTIVE, CONFIRMED, CLOSED) and is_paused boolean."
           }
@@ -1123,8 +1439,14 @@
             ],
             "url": {
               "raw": "{{base_url}}/subscriptions/1/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                ""
+              ]
             },
             "description": "Returns full subscription record, items, pause operational history, and renewal history."
           }
@@ -1149,8 +1471,15 @@
             },
             "url": {
               "raw": "{{base_url}}/subscriptions/1/activate/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", "activate", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                "activate",
+                ""
+              ]
             },
             "description": "Activates a CONFIRMED subscription, commencing billing intervals."
           }
@@ -1175,8 +1504,15 @@
             },
             "url": {
               "raw": "{{base_url}}/subscriptions/1/pause/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", "pause", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                "pause",
+                ""
+              ]
             },
             "description": "Pauses an active subscription and logs pause history with mandatory reason."
           }
@@ -1201,8 +1537,15 @@
             },
             "url": {
               "raw": "{{base_url}}/subscriptions/1/resume/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", "resume", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                "resume",
+                ""
+              ]
             },
             "description": "Resumes a paused subscription, closing the pause history record and restoring active status."
           }
@@ -1227,8 +1570,15 @@
             },
             "url": {
               "raw": "{{base_url}}/subscriptions/1/renew/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", "renew", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                "renew",
+                ""
+              ]
             },
             "description": "Creates a new renewed subscription linked via SubscriptionRenewal to the previous subscription."
           }
@@ -1253,8 +1603,15 @@
             },
             "url": {
               "raw": "{{base_url}}/subscriptions/1/close/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", "close", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                "close",
+                ""
+              ]
             },
             "description": "Permanently terminates a subscription."
           }
@@ -1271,8 +1628,15 @@
             ],
             "url": {
               "raw": "{{base_url}}/subscriptions/1/history/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", "history", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                "history",
+                ""
+              ]
             },
             "description": "Returns status transition audit trail for the subscription."
           }
@@ -1289,10 +1653,697 @@
             ],
             "url": {
               "raw": "{{base_url}}/subscriptions/1/renewals/",
-              "host": ["{{base_url}}"],
-              "path": ["subscriptions", "1", "renewals", ""]
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "subscriptions",
+                "1",
+                "renewals",
+                ""
+              ]
             },
             "description": "Returns linked previous and subsequent subscription renewal contracts."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part 2 - Taxes and Discounts",
+      "item": [
+        {
+          "name": "List Tax Rules",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/taxes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "taxes",
+                ""
+              ]
+            },
+            "description": "Lists all active and statutory tax rules."
+          }
+        },
+        {
+          "name": "Create Tax Rule (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tax_name\": \"GST 18%\",\n  \"tax_rate\": \"18.00\",\n  \"tax_type\": \"PERCENTAGE\",\n  \"description\": \"Standard Goods and Services Tax\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/taxes/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "taxes",
+                ""
+              ]
+            },
+            "description": "Creates a statutory tax configuration."
+          }
+        },
+        {
+          "name": "List Discount Campaigns",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/discounts/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "discounts",
+                ""
+              ]
+            },
+            "description": "Lists promotional discount campaigns and coupons."
+          }
+        },
+        {
+          "name": "Create Discount Rule (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"discount_name\": \"FESTIVE2026\",\n  \"coupon_code\": \"FESTIVE2026\",\n  \"discount_type\": \"PERCENTAGE\",\n  \"discount_value\": \"15.00\",\n  \"scope\": \"GLOBAL\",\n  \"max_usage_limit\": 100,\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/discounts/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "discounts",
+                ""
+              ]
+            },
+            "description": "Creates a promotional discount rule with usage limits."
+          }
+        },
+        {
+          "name": "Deactivate Discount Rule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/discounts/1/deactivate/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "discounts",
+                "1",
+                "deactivate",
+                ""
+              ]
+            },
+            "description": "Deactivates a discount rule or coupon."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part 2 - Invoices and Recurring Billing",
+      "item": [
+        {
+          "name": "List Invoices (Ledger)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/invoices/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                ""
+              ]
+            },
+            "description": "Lists invoices filtered by status, overdue, or customer."
+          }
+        },
+        {
+          "name": "Generate Cycle Invoice Manually",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"subscription_id\": 1,\n  \"notes\": \"Manual billing cycle run\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/invoices/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                ""
+              ]
+            },
+            "description": "Generates a cycle tax invoice for an active subscription."
+          }
+        },
+        {
+          "name": "Retrieve Invoice Specification",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/invoices/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                "1",
+                ""
+              ]
+            },
+            "description": "Retrieves full invoice details with line items and email logs."
+          }
+        },
+        {
+          "name": "Confirm Invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/invoices/1/confirm/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                "1",
+                "confirm",
+                ""
+              ]
+            },
+            "description": "Confirms a draft invoice and makes it payable."
+          }
+        },
+        {
+          "name": "Cancel Invoice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/invoices/1/cancel/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                "1",
+                "cancel",
+                ""
+              ]
+            },
+            "description": "Cancels an invoice."
+          }
+        },
+        {
+          "name": "Download Vector PDF Invoice",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/invoices/1/pdf/?download=true",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                "1",
+                "pdf",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "download",
+                  "value": "true"
+                }
+              ]
+            },
+            "description": "Downloads branded ReportLab vector PDF."
+          }
+        },
+        {
+          "name": "Dispatch Invoice Email Notice",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"recipient_email\": \"alice.customer@example.com\",\n  \"subject\": \"Brightloop Tax Invoice\",\n  \"message\": \"Please find attached your invoice.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/invoices/1/send-email/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                "1",
+                "send-email",
+                ""
+              ]
+            },
+            "description": "Sends vector PDF invoice attached via email."
+          }
+        },
+        {
+          "name": "List Overdue Invoices Aging Queue",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/invoices/overdue/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "invoices",
+                "overdue",
+                ""
+              ]
+            },
+            "description": "Returns unpaid invoices past their due date."
+          }
+        },
+        {
+          "name": "Run Automated Recurring Billing Cycle",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/run/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "billing",
+                "run",
+                ""
+              ]
+            },
+            "description": "Triggers recurring billing engine across all due subscriptions."
+          }
+        },
+        {
+          "name": "Audit Recurring Billing Logs",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/logs/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "billing",
+                "logs",
+                ""
+              ]
+            },
+            "description": "Returns audit history of automated billing engine cycles."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part 2 - Payments and Gateway",
+      "item": [
+        {
+          "name": "List Payment Transactions (Ledger)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/payments/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                ""
+              ]
+            },
+            "description": "Audit list of all payments and settlements."
+          }
+        },
+        {
+          "name": "Record Offline Payment (Cash / Bank Transfer / UPI)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoice_id\": 1,\n  \"amount\": \"500.00\",\n  \"payment_method\": \"BANK_TRANSFER\",\n  \"payment_date\": \"2026-10-31\",\n  \"transaction_reference\": \"UTR987654321\",\n  \"notes\": \"Offline collection reconciliation\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/record-manual/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "record-manual",
+                ""
+              ]
+            },
+            "description": "Records manual offline settlement and reconciles invoice balance."
+          }
+        },
+        {
+          "name": "Create Razorpay Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"invoice_id\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/create-razorpay-order/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "create-razorpay-order",
+                ""
+              ]
+            },
+            "description": "Creates Razorpay order for online payment."
+          }
+        },
+        {
+          "name": "Verify Razorpay Payment Signature",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"razorpay_order_id\": \"order_sample123\",\n  \"razorpay_payment_id\": \"pay_sample123\",\n  \"razorpay_signature\": \"sample_signature\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/payments/verify-razorpay/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "payments",
+                "verify-razorpay",
+                ""
+              ]
+            },
+            "description": "Validates HMAC SHA256 signature and marks invoice paid."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Part 2 - Financial Reports and Dashboard",
+      "item": [
+        {
+          "name": "Executive Dashboard Financial Summary",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/dashboard/summary/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "dashboard",
+                "summary",
+                ""
+              ]
+            },
+            "description": "Real-time KPIs for MRR, revenue collected, receivables, and churn."
+          }
+        },
+        {
+          "name": "Revenue Report JSON / CSV",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/revenue/?export=csv",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "revenue",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "export",
+                  "value": "csv"
+                }
+              ]
+            },
+            "description": "Exports monthly revenue breakdown as CSV."
+          }
+        },
+        {
+          "name": "Invoices Report JSON / CSV",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/invoices/?export=csv",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "invoices",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "export",
+                  "value": "csv"
+                }
+              ]
+            },
+            "description": "Exports tax invoices ledger as CSV."
+          }
+        },
+        {
+          "name": "Payments Ledger JSON / CSV",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/payments/?export=csv",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "payments",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "export",
+                  "value": "csv"
+                }
+              ]
+            },
+            "description": "Exports payment transactions ledger as CSV."
+          }
+        },
+        {
+          "name": "Subscriptions Summary JSON / CSV",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/reports/subscriptions/?export=csv",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "reports",
+                "subscriptions",
+                ""
+              ],
+              "query": [
+                {
+                  "key": "export",
+                  "value": "csv"
+                }
+              ]
+            },
+            "description": "Exports active subscriptions overview as CSV."
           }
         }
       ]

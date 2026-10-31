@@ -36,6 +36,10 @@ INSTALLED_APPS = [
     'plans',
     'quotations',
     'subscriptions',
+    'taxes',
+    'invoices',
+    'payments',
+    'reports',
 ]
 
 MIDDLEWARE = [
@@ -185,6 +189,11 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = TIME_ZONE
+# Razorpay Payment Gateway Configuration
+RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_brightloop_sample_key')
+RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'brightloop_sample_secret_key')
+RAZORPAY_WEBHOOK_SECRET = os.getenv('RAZORPAY_WEBHOOK_SECRET', 'brightloop_sample_webhook_secret')
+
 CELERY_BEAT_SCHEDULE = {
     'close_expired_plans_every_hour': {
         'task': 'plans.tasks.close_expired_plans_task',
@@ -201,5 +210,13 @@ CELERY_BEAT_SCHEDULE = {
     'close_expired_subscriptions_hourly': {
         'task': 'subscriptions.tasks.close_expired_subscriptions_task',
         'schedule': 3600.0,  # Run every hour
+    },
+    'generate_recurring_invoices_hourly': {
+        'task': 'invoices.tasks.generate_recurring_invoices_task',
+        'schedule': 3600.0,  # Run every hour
+    },
+    'check_overdue_invoices_daily': {
+        'task': 'invoices.tasks.check_overdue_invoices_task',
+        'schedule': 86400.0,  # Run daily
     },
 }

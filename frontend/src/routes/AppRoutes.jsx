@@ -37,6 +37,20 @@ import CustomerProductCatalogPage from '../pages/customer/CustomerProductCatalog
 import CustomerQuotationListPage from '../pages/customer/CustomerQuotationListPage';
 import CustomerSubscriptionListPage from '../pages/customer/CustomerSubscriptionListPage';
 
+// Part 2: Tax, Discount, Invoices, Payments, Reports Pages
+import TaxManagementPage from '../pages/admin/TaxManagementPage';
+import DiscountManagementPage from '../pages/admin/DiscountManagementPage';
+import InvoiceListPage from '../pages/admin/InvoiceListPage';
+import CreateInvoicePage from '../pages/admin/CreateInvoicePage';
+import InvoiceDetailPage from '../pages/admin/InvoiceDetailPage';
+import OverdueInvoicesPage from '../pages/admin/OverdueInvoicesPage';
+import PaymentListPage from '../pages/admin/PaymentListPage';
+import RecordPaymentPage from '../pages/admin/RecordPaymentPage';
+import FinancialDashboardPage from '../pages/admin/FinancialDashboardPage';
+
+import CustomerInvoiceListPage from '../pages/customer/CustomerInvoiceListPage';
+import CustomerInvoiceDetailPage from '../pages/customer/CustomerInvoiceDetailPage';
+
 // Root index redirector
 const RootRedirect = () => {
   const { user, isAuthenticated, isLoading } = useAuth();
@@ -198,6 +212,80 @@ export const AppRoutes = () => {
         }
       />
 
+      {/* Part 2: Tax, Discount, Invoice, Payment & Reports (Admin) */}
+      <Route
+        path="/admin/taxes"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <TaxManagementPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/discounts"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <DiscountManagementPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <InvoiceListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices/new"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <CreateInvoicePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices/overdue"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <OverdueInvoicesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/invoices/:id"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <InvoiceDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/payments"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <PaymentListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/payments/record"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN', 'STAFF']}>
+            <RecordPaymentPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/reports"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <FinancialDashboardPage />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Staff Routes */}
       <Route
         path="/staff/dashboard"
@@ -280,6 +368,72 @@ export const AppRoutes = () => {
         }
       />
 
+      {/* Part 2: Tax, Discount, Invoice, Payment (Staff) */}
+      <Route
+        path="/staff/taxes"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <TaxManagementPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/discounts"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <DiscountManagementPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/invoices"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <InvoiceListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/invoices/new"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <CreateInvoicePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/invoices/overdue"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <OverdueInvoicesPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/invoices/:id"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <InvoiceDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/payments"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <PaymentListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/payments/record"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <RecordPaymentPage />
+          </ProtectedRoute>
+        }
+      />
+
       {/* Customer Routes */}
       <Route
         path="/customer/dashboard"
@@ -310,6 +464,22 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={['CUSTOMER']}>
             <CustomerSubscriptionListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customer/invoices"
+        element={
+          <ProtectedRoute allowedRoles={['CUSTOMER']}>
+            <CustomerInvoiceListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/customer/invoices/:id"
+        element={
+          <ProtectedRoute allowedRoles={['CUSTOMER']}>
+            <CustomerInvoiceDetailPage />
           </ProtectedRoute>
         }
       />

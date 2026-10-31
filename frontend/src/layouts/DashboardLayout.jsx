@@ -16,6 +16,11 @@ import {
   Shield,
   ChevronRight,
   User,
+  Percent,
+  Tag,
+  Receipt,
+  BarChart3,
+  Clock,
 } from 'lucide-react';
 
 export const DashboardLayout = ({ children, title, subtitle }) => {
@@ -68,11 +73,40 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
           badge: 'Part 1',
         },
         {
-          label: 'Invoices & Billing',
-          path: '#',
+          label: 'Invoices Ledger',
+          path: '/admin/invoices',
           icon: FileText,
           badge: 'Part 2',
-          disabled: true,
+        },
+        {
+          label: 'Overdue Queue',
+          path: '/admin/invoices/overdue',
+          icon: Clock,
+          badge: 'Part 2',
+        },
+        {
+          label: 'Payments Ledger',
+          path: '/admin/payments',
+          icon: Receipt,
+          badge: 'Part 2',
+        },
+        {
+          label: 'Tax Configuration',
+          path: '/admin/taxes',
+          icon: Percent,
+          badge: 'Part 2',
+        },
+        {
+          label: 'Discounts & Coupons',
+          path: '/admin/discounts',
+          icon: Tag,
+          badge: 'Part 2',
+        },
+        {
+          label: 'Financial Reports',
+          path: '/admin/reports',
+          icon: BarChart3,
+          badge: 'Part 2',
         },
       ];
     }
@@ -111,11 +145,28 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
           badge: 'Part 1',
         },
         {
-          label: 'Invoices & Payments',
-          path: '#',
+          label: 'Invoices',
+          path: '/staff/invoices',
           icon: FileText,
           badge: 'Part 2',
-          disabled: true,
+        },
+        {
+          label: 'Payments',
+          path: '/staff/payments',
+          icon: Receipt,
+          badge: 'Part 2',
+        },
+        {
+          label: 'Tax Rates',
+          path: '/staff/taxes',
+          icon: Percent,
+          badge: 'Part 2',
+        },
+        {
+          label: 'Discount Rules',
+          path: '/staff/discounts',
+          icon: Tag,
+          badge: 'Part 2',
         },
       ];
     }
@@ -143,10 +194,9 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
       },
       {
         label: 'Invoices & Receipts',
-        path: '#',
+        path: '/customer/invoices',
         icon: FileText,
         badge: 'Part 2',
-        disabled: true,
       },
     ];
   };
@@ -155,9 +205,9 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
 
   const SidebarContent = () => (
     <div className="flex flex-col h-full justify-between bg-slate-900 text-slate-300">
-      <div>
+      <div className="flex-1 overflow-y-auto">
         {/* Brand Header */}
-        <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800">
+        <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
           <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-500 to-cyan-400 flex items-center justify-center shadow-md">
             <Layers className="w-5 h-5 text-white" />
           </div>
