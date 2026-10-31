@@ -1,172 +1,151 @@
 # Brightloop Software – Subscription Management System
-## Multi-Module Enterprise SaaS Billing Platform
 
-A modular, scalable, and production-grade full-stack web application for recurring subscription billing, quotation workflows, automated invoice generation, and revenue lifecycle management.
-
-### Platform Modules Architecture:
-- **Module 1: Authentication and User Role Management** (COMPLETED & VERIFIED)
-- **Module 2: Product and Product Variant Management** (COMPLETED & VERIFIED)
-- **Module 3: Subscription Plan Management** (Upcoming — Daily, Weekly, Monthly, Annual plans linked to Variants)
-- **Module 4: Subscription Lifecycle Management** (Upcoming — Create, Renew, Pause, Cancel)
-- **Module 5: Tax and Discount Management** (Upcoming)
-- **Module 6: Automated Invoice Generation** (Upcoming)
-- **Module 7: Payment Gateway Integration** (Upcoming)
-- **Module 8: Revenue & Churn Analytics** (Upcoming)
+A production-grade, enterprise-scale subscription management platform designed to automate software product subscriptions, recurring billing cycles, invoice generation, and lifecycle governance.
 
 ---
 
-## 1. Technology Stack
+## Architecture & Technology Stack
 
-### Frontend
-- **React.js** (Vite build engine)
-- **Tailwind CSS** (Utility-first styling with modern dark/light contrast)
-- **React Router DOM v7** (Role-based route guards)
-- **Axios** (With silent token refresh and response interceptors)
-- **Lucide React** (Modern SaaS iconography)
-
-### Backend
-- **Python 3.11+**
-- **Django 5.x**
-- **Django REST Framework (DRF)**
-- **Django REST Framework Simple JWT** (Access + Refresh tokens with blacklist rotation)
-- **django-cors-headers**
-- **psycopg2-binary** (PostgreSQL adapter)
-- **python-dotenv**
-
-### Database
-- **PostgreSQL** (Production standard) with SQLite development fallback
+- **Frontend:** React 19, Tailwind CSS, React Router DOM, Axios, Lucide React
+- **Backend:** Python 3.12, Django 5.x, Django REST Framework, SimpleJWT
+- **Background Tasks & Scheduling:** Celery, Redis
+- **Database:** PostgreSQL (with Django ORM)
+- **API Documentation & Testing:** Postman (`postman/Brightloop_Subscription_Management_API.postman_collection.json`)
 
 ---
 
-## 2. Module 1: Authentication & User Role Governance
+## Modules Implemented
 
-Strict **Role-Based Access Control (RBAC)** enforced by backend permission classes:
-- **Admin (`ADMIN`)**: Full application access, staff account provisioning, staff activation/deactivation, product CRUD, and system configuration.
-- **Staff (`STAFF`)**: Operational management; can view products and variants to assist subscribers; blocked by backend from creating other staff or modifying products.
-- **Customer (`CUSTOMER`)**: Independent self-registration (`/register`); access to customer portal; isolated strictly to their own data; read-only access to published active products.
+### Module 1: Authentication & User Role Management
+- **Role-Based Access Control (RBAC):** `ADMIN`, `STAFF`, `CUSTOMER`.
+- **Custom User Model:** Email-as-username, Bcrypt-grade password hashing, activation control.
+- **JWT Authentication:** SimpleJWT access & refresh tokens with token blacklist rotation.
+- **Customer Registration:** Client & server validation (8+ chars, uppercase, lowercase, special character, match confirmation).
+- **Staff Provisioning:** Admin-only staff account creation, activation/deactivation toggles, directory browsing.
+- **Forgot Password Workflow:** Cryptographic reset tokens, time-limited reset links, secure password updates.
 
-### Password Security Standard
-- Password length must be **MORE THAN 8 characters** (at least 9 characters).
-- At least one uppercase letter (`A-Z`).
-- At least one lowercase letter (`a-z`).
-- At least one special character (`[^A-Za-z0-9]`).
-- Hashed using Django's PBKDF2/SHA256 hasher before storage.
+### Module 2: Product & Product Variant Management
+- **Products:** Core software offerings (`SOFTWARE`, `SERVICE`, `STORAGE`, `ADDON`, `API`) with auto-generated unique codes (`PRD-XXXXXX`).
+- **Product Variants:** Multi-tier specifications (e.g., Basic, Pro, Enterprise, Dedicated) with custom SKU generator (`SKU-XXXXXX`), billing types (`RECURRING`, `ONE_TIME`, `METERED`), and JSON attributes (`seats`, `storage_gb`, `rate_limit`).
+- **Data Integrity:** `PROTECT` on delete foreign keys prevent orphaned variants or plans.
+- **RBAC:** Admins have full CRUD; Staff has operational read-only clearance; Customers browse active products.
 
----
-
-## 3. Module 2: Product and Product Variant Management
-
-Module 2 allows administrators to create, manage, update, and organize SaaS products and their tier variants. These variants serve as the foundational entities that will be attached to recurring subscription plans in Module 3.
-
-### 3.1 Database Models (`backend/products/models.py`)
-
-#### `Product` Model
-- `id` (BigAutoField, Primary Key)
-- `name` (CharField, max 255)
-- `code` (SlugField, unique, indexed, e.g. `brightloop-analytics`)
-- `description` (TextField)
-- `category` (Choice: `SOFTWARE`, `SERVICE`, `STORAGE`, `ADDON`, `API`)
-- `status` (Choice: `DRAFT`, `ACTIVE`, `INACTIVE`, `ARCHIVED`)
-- `is_recurring` (BooleanField, default `True`)
-- `created_by` (ForeignKey -> `User`)
-- `created_at` / `updated_at` (DateTimeFields)
-- Computed properties: `total_variants_count`, `active_variants_count`, `min_price`, `max_price`.
-
-#### `ProductVariant` Model
-- `id` (BigAutoField, Primary Key)
-- `product` (ForeignKey -> `Product`, `on_delete=CASCADE`, `related_name='variants'`)
-- `name` (CharField, max 255, e.g. `Professional Tier`, `500GB SSD Vault`)
-- `sku` (CharField, unique, indexed, uppercase, e.g. `BL-ANL-PRO`)
-- `description` (TextField)
-- `price` (DecimalField, min 0.00, reference price)
-- `currency` (CharField, default `USD`)
-- `billing_type` (Choice: `RECURRING`, `ONE_TIME`, `METERED`)
-- `is_active` (BooleanField, default `True`)
-- `attributes` (JSONField, e.g. `{"seats": 25, "storage_gb": 250, "sla_hours": 4}`)
-- `sort_order` (PositiveIntegerField, default 0)
-- `created_at` / `updated_at` (DateTimeFields)
-
-### 3.2 REST API Endpoints
-
-| Category | Method | Endpoint | Permissions | Description |
-| :--- | :---: | :--- | :--- | :--- |
-| **Products** | `GET` | `/api/products/?search=&category=&status=` | Authenticated | List products. Filtered to `ACTIVE` only for customers. |
-| **Products** | `POST` | `/api/products/` | `ADMIN` only | Create new core product. |
-| **Products** | `GET` | `/api/products/<id>/` | Authenticated | Get product specifications and nested variant tiers. |
-| **Products** | `PATCH` | `/api/products/<id>/` | `ADMIN` only | Update product details. |
-| **Products** | `PATCH` | `/api/products/<id>/status/` | `ADMIN` only | Change product status (`ACTIVE`, `INACTIVE`, `DRAFT`, `ARCHIVED`). |
-| **Products** | `DELETE`| `/api/products/<id>/` | `ADMIN` only | Delete product and cascaded variants. |
-| **Variants** | `GET` | `/api/products/<product_id>/variants/` | Authenticated | List all variants/tiers for a product. |
-| **Variants** | `POST` | `/api/products/<product_id>/variants/` | `ADMIN` only | Create a new tier variant with price and attributes. |
-| **Variants** | `GET` | `/api/variants/<id>/` | Authenticated | Get variant detail. |
-| **Variants** | `PATCH` | `/api/variants/<id>/` | `ADMIN` only | Update variant details, price, or custom attributes. |
-| **Variants** | `PATCH` | `/api/variants/<id>/status/` | `ADMIN` only | Activate or deactivate variant. |
-| **Variants** | `DELETE`| `/api/variants/<id>/` | `ADMIN` only | Delete variant tier. |
+### Module 3: Subscription Plan Management
+- **Plan Definitions:** Connects to active `Product` and optional `ProductVariant`. Defines non-negative recurring price, currency (`INR`, `USD`, `EUR`, `GBP`), and minimum order quantity ($\ge 1$).
+- **Supported Billing Intervals:** Strictly enforced:
+  - `DAILY`: Charged every 24 hours.
+  - `WEEKLY`: Charged every 7 days.
+  - `MONTHLY`: Charged monthly.
+  - `YEARLY`: Charged annually.
+- **Purchase Availability Management:** Configurable `available_from` and `available_until` window. Supports indefinite availability (no end date).
+- **Plan Lifecycle Configuration:**
+  - `auto_close`: Automatically transitions plan to `CLOSED` when end date passes.
+  - `allow_early_closure`: Allows Admin to retire a plan prior to end date.
+  - `allow_pause`: Permits temporary suspension of new subscriptions.
+  - `allow_renewal`: Guarantees existing subscribers can renew after plan availability ends.
+- **State Machine & Status Transitions:**
+  - `ACTIVE` $\leftrightarrow$ `PAUSED` (Requires `allow_pause = True`)
+  - `ACTIVE` $\to$ `CLOSED` (Requires `allow_early_closure = True` or expired window)
+  - `PAUSED` $\to$ `CLOSED`
+  - `CLOSED` is terminal: Reopening a closed plan is strictly prohibited.
+- **Audit Trail:** Every status transition writes an immutable `PlanStatusHistory` record capturing previous status, new status, changed by user, change reason, and timestamp.
+- **Celery Periodic Automation:** Hourly background daemon (`close_expired_plans_task`) checks for expired plans with `auto_close=True` and closes them automatically.
+- **RBAC:** Admins have complete CRUD & lifecycle controls; Staff has read-only access for operational customer assistance; Customers cannot access administrative management endpoints.
 
 ---
 
-## 4. Setup and Execution Instructions
+## API Endpoints Overview
 
-### 4.1 Backend Setup
+### Authentication (`/api/auth/`)
+| Method | Endpoint | Description | Clearance |
+|---|---|---|---|
+| `POST` | `/api/auth/register/` | Register customer account | Public |
+| `POST` | `/api/auth/login/` | Obtain JWT access & refresh tokens | Public |
+| `POST` | `/api/auth/token/refresh/` | Refresh expired access token | Public |
+| `POST` | `/api/auth/logout/` | Blacklist refresh token and logout | Authenticated |
+| `POST` | `/api/auth/forgot-password/` | Request password reset token | Public |
+| `POST` | `/api/auth/reset-password/` | Reset password using reset token | Public |
+| `GET` | `/api/auth/me/` | Fetch current user profile and role | Authenticated |
+| `GET` | `/api/admin/staff/` | List all staff members | Admin only |
+| `POST` | `/api/admin/staff/` | Create new staff account | Admin only |
+| `PATCH` | `/api/admin/staff/<id>/status/` | Activate or deactivate staff account | Admin only |
+
+### Products & Variants (`/api/products/`, `/api/variants/`)
+| Method | Endpoint | Description | Clearance |
+|---|---|---|---|
+| `GET` | `/api/products/` | List products with search and category filters | Authenticated |
+| `POST` | `/api/products/` | Create new software product | Admin only |
+| `GET` | `/api/products/<id>/` | Get detailed product specifications | Authenticated |
+| `PATCH` | `/api/products/<id>/` | Update product details | Admin only |
+| `DELETE` | `/api/products/<id>/` | Delete product (protected against in-use items) | Admin only |
+| `PATCH` | `/api/products/<id>/status/` | Toggle product status (ACTIVE, DRAFT, ARCHIVED) | Admin only |
+| `GET` | `/api/products/<id>/variants/` | List variants belonging to product | Authenticated |
+| `POST` | `/api/products/<id>/variants/` | Create variant under product | Admin only |
+| `GET` | `/api/variants/<id>/` | Retrieve variant details | Authenticated |
+| `PATCH` | `/api/variants/<id>/` | Update variant details | Admin only |
+| `DELETE` | `/api/variants/<id>/` | Delete variant | Admin only |
+| `PATCH` | `/api/variants/<id>/status/` | Toggle variant active status | Admin only |
+
+### Subscription Plans (`/api/plans/`)
+| Method | Endpoint | Description | Clearance |
+|---|---|---|---|
+| `GET` | `/api/plans/metrics/` | Aggregated plan counts and billing distribution | Admin & Staff |
+| `GET` | `/api/plans/` | List paginated plans (supports search, product, interval, status filters) | Admin & Staff |
+| `POST` | `/api/plans/` | Create subscription plan with lifecycle policies | Admin only |
+| `GET` | `/api/plans/<id>/` | Get comprehensive plan details & history | Admin & Staff |
+| `PATCH` | `/api/plans/<id>/` | Update plan details (prohibited on CLOSED plans) | Admin only |
+| `DELETE` | `/api/plans/<id>/` | Delete subscription plan | Admin only |
+| `POST` | `/api/plans/<id>/pause/` | Temporarily pause plan (stops new subscriptions) | Admin only |
+| `POST` | `/api/plans/<id>/resume/` | Resume paused plan back to active status | Admin only |
+| `POST` | `/api/plans/<id>/close/` | Permanently close plan (irreversible) | Admin only |
+| `POST` | `/api/plans/<id>/activate/` | Activate inactive/draft plan | Admin only |
+| `GET` | `/api/plans/<id>/history/` | Audit log of status transitions and reasons | Admin & Staff |
+
+---
+
+## Running the Application
+
+### 1. Backend Setup
 
 ```bash
 cd backend
+python -m venv venv
+venv\Scripts\activate   # On Windows
+# source venv/bin/activate # On Linux/macOS
 
-# 1. Activate virtual environment
-.\venv\Scripts\activate   # Windows
-# source venv/bin/activate # macOS/Linux
-
-# 2. Run migrations
+pip install -r requirements.txt
 python manage.py migrate
-
-# 3. Seed Administrator account
-python manage.py initadmin
-# Default Admin: admin@brightloop.com / Admin@Brightloop2026!
-
-# 4. Seed initial SaaS products and variants
-python manage.py seedproducts
-
-# 5. Start Django development server
-python manage.py runserver 127.0.0.1:8000
+python manage.py seedusers     # Seeds default admin, staff, and customer accounts
+python manage.py seedproducts  # Seeds realistic software products & variants
+python manage.py seedplans     # Seeds realistic subscription plans
+python manage.py runserver
 ```
 
-### 4.2 Frontend Setup
+Default credentials:
+- **Admin:** `admin@brightloop.io` / `BrightloopAdmin2026!`
+- **Staff:** `staff@brightloop.io` / `BrightloopStaff2026!`
+- **Customer:** `customer@brightloop.io` / `CustomerSecure2026!`
+
+### 2. Celery Worker & Beat (Background Daemon)
+
+```bash
+# Terminal 1: Celery Worker
+celery -A config worker --loglevel=info
+
+# Terminal 2: Celery Beat (Hourly automated plan closure)
+celery -A config beat --loglevel=info
+```
+
+### 3. Frontend Setup
 
 ```bash
 cd frontend
-
-# 1. Install dependencies
 npm install
-
-# 2. Start Vite development server
 npm run dev
 ```
 
-Application will run at `http://localhost:5173/`.
+Visit `http://localhost:5173` to access the application.
 
 ---
 
-## 5. Automated Test Suite (28 Tests Passing)
 
-To run the complete automated test suite covering Module 1 and Module 2:
-
-```bash
-cd backend
-.\venv\Scripts\python.exe manage.py test accounts products
-```
-
-**Results:**
-```
-Ran 28 tests in 52.125s
-OK
-```
-
-### Verified Test Scenarios:
-- **Accounts (15 tests):** Customer registration, unique email validation, password complexity, login verification, invalid credential rejection, inactive account lockout, password reset token generation, token expiration check, single-use token invalidation, admin staff creation, staff creation lockout for non-admins, customer isolation, and JWT verification.
-- **Products & Variants (13 tests):** Admin product creation, unique slug/code enforcement, variant creation, unique SKU validation, negative price prevention, product details & status update, variant status toggle, staff read-only clearance, staff modification lockout, customer active catalog filtering, customer inactive variant filtering, customer write lockout, and unauthenticated request rejection.
-
----
-
-## 6. Postman Collection
-
-Import `postman/Brightloop_Subscription_Management_API.postman_collection.json` into Postman. It includes pre-configured requests for Authentication, Password Recovery, Staff Management, Products, and Product Variants with automated JWT session persistence.

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, UserCheck, User, CheckCircle2, XCircle } from 'lucide-react';
+import { ShieldCheck, UserCheck, User, CheckCircle2, XCircle, PauseCircle, Lock, AlertCircle, Calendar } from 'lucide-react';
 
 export const Badge = ({ children, variant = 'default', size = 'sm', className = '' }) => {
   const variants = {
@@ -129,5 +129,78 @@ export const BillingTypeBadge = ({ type }) => {
   );
 };
 
+export const PlanStatusBadge = ({ status }) => {
+  const normalized = (status || '').toUpperCase();
+  if (normalized === 'ACTIVE') {
+    return (
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        Active
+      </span>
+    );
+  }
+  if (normalized === 'PAUSED') {
+    return (
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+        <PauseCircle className="w-3 h-3 text-amber-600" />
+        Paused
+      </span>
+    );
+  }
+  if (normalized === 'CLOSED') {
+    return (
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-300">
+        <Lock className="w-3 h-3 text-slate-400" />
+        Closed
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+      <AlertCircle className="w-3 h-3 text-rose-500" />
+      Inactive
+    </span>
+  );
+};
+
+export const BillingIntervalBadge = ({ interval }) => {
+  const normalized = (interval || '').toUpperCase();
+  const styles = {
+    DAILY: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+    WEEKLY: 'bg-blue-50 text-blue-700 border-blue-200',
+    MONTHLY: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+    YEARLY: 'bg-purple-50 text-purple-700 border-purple-200',
+  };
+  const labels = {
+    DAILY: 'Daily',
+    WEEKLY: 'Weekly',
+    MONTHLY: 'Monthly',
+    YEARLY: 'Yearly',
+  };
+  return (
+    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium border ${styles[normalized] || 'bg-slate-100 text-slate-700 border-slate-200'}`}>
+      {labels[normalized] || interval}
+    </span>
+  );
+};
+
+export const AvailabilityBadge = ({ isCurrentlyAvailable, availabilityDisplay }) => {
+  if (isCurrentlyAvailable) {
+    return (
+      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+        {availabilityDisplay || 'Available'}
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+      <Calendar className="w-3 h-3 text-slate-400" />
+      {availabilityDisplay || 'Unavailable'}
+    </span>
+  );
+};
+
 export default Badge;
+
 

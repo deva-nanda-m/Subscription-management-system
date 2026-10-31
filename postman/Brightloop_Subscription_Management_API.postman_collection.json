@@ -557,6 +557,237 @@
           }
         }
       ]
+    },
+    {
+      "name": "Module 3 - Subscription Plan Management",
+      "item": [
+        {
+          "name": "Get Plan Metrics (Admin & Staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/plans/metrics/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "metrics", ""]
+            },
+            "description": "Returns aggregated plan counts (total, active, paused, closed, currently available) and billing interval distribution."
+          }
+        },
+        {
+          "name": "List Subscription Plans (Admin & Staff)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/plans/?search=&billing_interval=&status=&available_only=",
+              "host": ["{{base_url}}"],
+              "path": ["plans", ""],
+              "query": [
+                { "key": "search", "value": "", "description": "Filter by plan name, code, product name, or variant" },
+                { "key": "billing_interval", "value": "", "description": "DAILY, WEEKLY, MONTHLY, or YEARLY" },
+                { "key": "status", "value": "", "description": "ACTIVE, PAUSED, CLOSED, or INACTIVE" },
+                { "key": "available_only", "value": "", "description": "Set to true to show only currently open plans" }
+              ]
+            },
+            "description": "Lists paginated subscription plans with filtering, search, and sorting capabilities."
+          }
+        },
+        {
+          "name": "Create Subscription Plan (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Accounting Basic Monthly\",\n  \"description\": \"Core accounting software subscription with monthly billing.\",\n  \"product\": 1,\n  \"variant\": 1,\n  \"price\": \"500.00\",\n  \"currency\": \"INR\",\n  \"billing_interval\": \"MONTHLY\",\n  \"minimum_quantity\": 1,\n  \"available_from\": \"2026-01-01\",\n  \"available_until\": null,\n  \"auto_close\": true,\n  \"allow_early_closure\": true,\n  \"allow_pause\": true,\n  \"allow_renewal\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/plans/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", ""]
+            },
+            "description": "Creates a new subscription plan with lifecycle policies and billing intervals."
+          }
+        },
+        {
+          "name": "Get Subscription Plan Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/plans/1/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "1", ""]
+            },
+            "description": "Retrieves comprehensive subscription plan details including associated product/variant and lifecycle audit trail."
+          }
+        },
+        {
+          "name": "Update Subscription Plan (Admin Only)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Accounting Basic Monthly (Updated)\",\n  \"price\": \"550.00\",\n  \"minimum_quantity\": 2\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/plans/1/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "1", ""]
+            },
+            "description": "Partially updates an existing subscription plan. Closed plans cannot be updated."
+          }
+        },
+        {
+          "name": "Pause Plan (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"change_reason\": \"Temporary maintenance and pricing tier revision.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/plans/1/pause/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "1", "pause", ""]
+            },
+            "description": "Transitions an ACTIVE plan to PAUSED status. Only valid if allow_pause=true."
+          }
+        },
+        {
+          "name": "Resume Plan (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"change_reason\": \"Pricing adjustments completed, resuming subscriptions.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/plans/1/resume/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "1", "resume", ""]
+            },
+            "description": "Transitions a PAUSED plan back to ACTIVE status."
+          }
+        },
+        {
+          "name": "Close Plan Permanently (Admin Only)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"change_reason\": \"Legacy product tier decommissioned.\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/plans/1/close/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "1", "close", ""]
+            },
+            "description": "Transitions a plan permanently to CLOSED status. Requires allow_early_closure or passed availability window. Cannot be undone."
+          }
+        },
+        {
+          "name": "Get Plan Status Audit History",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/plans/1/history/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "1", "history", ""]
+            },
+            "description": "Returns full chronological audit log of all status transitions for the plan."
+          }
+        },
+        {
+          "name": "Delete Subscription Plan (Admin Only)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/plans/1/",
+              "host": ["{{base_url}}"],
+              "path": ["plans", "1", ""]
+            },
+            "description": "Deletes a subscription plan."
+          }
+        }
+      ]
     }
   ]
 }

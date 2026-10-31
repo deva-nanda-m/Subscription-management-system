@@ -14,9 +14,14 @@ import AdminDashboardPage from '../pages/admin/AdminDashboardPage';
 import StaffManagementPage from '../pages/admin/StaffManagementPage';
 import ProductListPage from '../pages/admin/ProductListPage';
 import ProductDetailPage from '../pages/admin/ProductDetailPage';
+import PlanListPage from '../pages/admin/PlanListPage';
+import CreatePlanPage from '../pages/admin/CreatePlanPage';
+import PlanDetailPage from '../pages/admin/PlanDetailPage';
+import EditPlanPage from '../pages/admin/EditPlanPage';
 
 import StaffDashboardPage from '../pages/staff/StaffDashboardPage';
 import StaffProductCatalogPage from '../pages/staff/StaffProductCatalogPage';
+import StaffPlanListPage from '../pages/staff/StaffPlanListPage';
 
 import CustomerDashboardPage from '../pages/customer/CustomerDashboardPage';
 import CustomerProductCatalogPage from '../pages/customer/CustomerProductCatalogPage';
@@ -91,6 +96,38 @@ export const AppRoutes = () => {
           </ProtectedRoute>
         }
       />
+      <Route
+        path="/admin/plans"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <PlanListPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/plans/new"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <CreatePlanPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/plans/:id"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <PlanDetailPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin/plans/:id/edit"
+        element={
+          <ProtectedRoute allowedRoles={['ADMIN']}>
+            <EditPlanPage />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Staff Routes */}
       <Route
@@ -106,6 +143,14 @@ export const AppRoutes = () => {
         element={
           <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
             <StaffProductCatalogPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/staff/plans"
+        element={
+          <ProtectedRoute allowedRoles={['STAFF', 'ADMIN']}>
+            <StaffPlanListPage />
           </ProtectedRoute>
         }
       />

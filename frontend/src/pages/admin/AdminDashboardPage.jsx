@@ -168,15 +168,19 @@ export const AdminDashboardPage = () => {
                 </span>
               </Link>
 
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-xs">
-                <div className="flex items-center gap-2 font-medium text-slate-700">
-                  <CreditCard className="w-4 h-4 text-cyan-500" />
+              <Link
+                to="/admin/plans"
+                className="flex items-center justify-between p-2.5 rounded-lg bg-indigo-50/60 border border-indigo-100 hover:bg-indigo-50 text-xs transition-colors"
+              >
+                <div className="flex items-center gap-2 font-medium text-slate-900">
+                  <CreditCard className="w-4 h-4 text-indigo-600" />
                   <span>Module 3: Subscription Plans (Cycles & Pricing)</span>
                 </div>
-                <span className="px-2 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[10px] font-semibold">
-                  Upcoming
+                <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  Active
                 </span>
-              </div>
+              </Link>
 
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-50 border border-slate-100 text-xs">
                 <div className="flex items-center gap-2 font-medium text-slate-700">

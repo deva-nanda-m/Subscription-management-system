@@ -45,10 +45,9 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
         },
         {
           label: 'Subscription Plans',
-          path: '#',
+          path: '/admin/plans',
           icon: CreditCard,
           badge: 'Module 3',
-          disabled: true,
         },
         {
           label: 'Invoices & Billing',
@@ -68,6 +67,12 @@ export const DashboardLayout = ({ children, title, subtitle }) => {
           path: '/staff/products',
           icon: Package,
           badge: 'Module 2',
+        },
+        {
+          label: 'Subscription Plans',
+          path: '/staff/plans',
+          icon: CreditCard,
+          badge: 'Module 3',
         },
         {
           label: 'Active Subscriptions',
